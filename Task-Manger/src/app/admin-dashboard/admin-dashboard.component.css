@@ -23,3 +23,10 @@ i {
     -moz-transition: 1s ease-in-out;
     -o-transition: 1s ease-in-out;
     transition: 0.2s ease-in-out;    }
+
+    .functionContainer {
+        width: 120000px;
+        height: 400px;
+        background-color: darkgray;
+        border-radius: 10px;
+    }
