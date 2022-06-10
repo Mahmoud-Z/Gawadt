@@ -8,6 +8,7 @@ import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { NavbarComponent } from './navbar/navbar.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     DragDropModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -17,7 +17,7 @@
                         <li class="list-group-item" cdkDrag class="drag-item" *ngFor="let j of tasks[i.id]">
                             <div class="row">
                             <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
-                            <!-- <p>{{countUp(j.duration)}}</p> -->
+                            <p>{{counters[j.id]}}</p>
                             </div>
                         </li>
                     </ul>

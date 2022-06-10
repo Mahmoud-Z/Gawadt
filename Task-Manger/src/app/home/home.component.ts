@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { CdkDragDrop,moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { interval } from 'rxjs';
+import { end } from '@popperjs/core';
 
 @Component({
   selector: 'app-home',
@@ -19,8 +20,26 @@ export class HomeComponent implements OnInit {
   constructor(public Service:ApiService) {
     this.getMachines()
     this.getTasks() 
+    interval(1000).subscribe((ev)=>{
+      this.counters={}
+      for (let i = 0; i < Object.keys(this.tasks).length; i++) {
+        if(this.tasks[Object.keys(this.tasks)[i]][0]!=undefined)
+          this.counters[this.tasks[Object.keys(this.tasks)[i]][0].id]=this.timeCounter(this.tasks[Object.keys(this.tasks)[i]][0].endDate)
+      }
+    }) 
   }
   ngOnInit(): void {
+  }
+  timeCounter(endDate:any){
+    var seconds = Math.floor(((new Date().getTime())-(new Date(endDate).getTime()))/1000);
+    var minutes = Math.floor(seconds/60);
+    var hours = Math.floor(minutes/60);
+    var days = Math.floor(hours/24);
+    hours = hours-(days*24);
+    minutes = minutes-(days*24*60)-(hours*60);
+    seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
+    this.remainingTime=days+"D"+" : "+hours+"H"+" : "+minutes+"M"+" : "+seconds+"S";
+    return this.remainingTime
   }
   deleteMachine(element:any){
     this.Service.postFun('deleteMachine',{id:element}).subscribe(data => {
@@ -50,7 +69,21 @@ export class HomeComponent implements OnInit {
       this.tasks=data;
     })
   }
+  updateTask(machineId:any,taskId:any,machineIdBefore:any,taskIDsBefore:any) {
+    this.Service.postFun('updateTask',{machineId,taskId,machineIdBefore,taskIDsBefore}).subscribe(data => {
+      console.log(data);
+      // this.getTasks()
+    })
+  }
+  timeCalculation(id:any,oldTask:any){
+    if (oldTask!=id) {
+      this.Service.postFun('changeTime',{id,oldTask}).subscribe(data => {
+        this.getTasks()
+      })
+    }
+  }
   onDrop(event:CdkDragDrop<string []>){
+    let oldTask=JSON.parse(JSON.stringify(event.container.data[0])).id;
     if (event.previousContainer === event.container) {
         moveItemInArray(
         event.container.data,
@@ -66,25 +99,15 @@ export class HomeComponent implements OnInit {
         event.currentIndex
       )
     }
+    let taskIDs=[];
+    let taskIDsBefore=[];
+    for (let i = 0; i < event.container.data.length; i++) {
+      taskIDs.push(JSON.parse(JSON.stringify(event.container.data[i])).id)
+    }
+    for (let i = 0; i < event.previousContainer.data.length; i++) {
+      taskIDsBefore.push(JSON.parse(JSON.stringify(event.previousContainer.data[i])).id)
+    }
+    this.updateTask(event.container.id,taskIDs,event.previousContainer.id,taskIDsBefore)
+    this.timeCalculation(JSON.parse(JSON.stringify(event.container.data[0])).id,oldTask)
   }
-  // timeCounter(duration:any){
-  //   try {
-  //     var seconds = Math.floor((new Date(data[0].EndDate).getTime() - (new Date().getTime()))/1000);
-  //     var minutes = Math.floor(seconds/60);
-  //     var hours = Math.floor(minutes/60);
-  //     var days = Math.floor(hours/24);
-  
-  //     hours = hours-(days*24);
-  //     minutes = minutes-(days*24*60)-(hours*60);
-  //     seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
-  //     this.remainingTime=days+"D"+" : "+hours+"H"+" : "+minutes+"M"+" : "+seconds+"S";
-  //   } catch (error:any) {
-  //     console.log(error.message);
-  //   }
-  // }
-  // countUp(duration:any){
-  //   interval(1000).subscribe((ev)=>{
-  //     this.timeCounter(duration)
-  //   })  
-  // }
 }
