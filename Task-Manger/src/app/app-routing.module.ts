@@ -2,10 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { HomeComponent } from './home/home.component';
+import { LogInComponent } from './log-in/log-in.component';
 const routes: Routes = [
-  {path:"",redirectTo:"home",pathMatch:"full"},
+  {path:"",redirectTo:"logIn",pathMatch:"full"},
   {path:"home",component: HomeComponent},
-  {path:"admin-dashboard",component: AdminDashboardComponent}
+  {path:"admin-dashboard",component: AdminDashboardComponent},
+  {path:"logIn",component: LogInComponent},
+  {path: '**', component: LogInComponent}
+
+
 
   
 ];

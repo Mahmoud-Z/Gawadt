@@ -1,0 +1,63 @@
+<section id="login">
+
+    <div class="overlay">
+        <!-- ================================spinner============================== -->
+        <!-- <div class="parent-spinner">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+        ================================/spinner============================== -->
+
+        <!-- ======================login form================================= -->
+
+        <div class="container pt-5">
+            <div class="row">
+                <div class="col-md-6 m-auto p-5">
+                    <div class="form p-5 ">
+                        <div class="text-center">
+                            <h2 class="text-center text-white">Sign In<samp class="main-color  ">.</samp></h2>
+                        </div>
+
+                        <form action="" [formGroup]="form" (ngSubmit)="login()" class=" mb-2 ">
+
+                            <input placeholder="User Name" formControlName="email" name="email" value="" type="email"
+                                class="form-control my-4 inp" type="text">
+                            <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+
+                                <small class="btn btn-danger px-5 form-control"
+                                    *ngIf="form.get('email')?.errors?.['required']">User Name is required</small>
+                            </div>
+
+                            <input placeholder="Password" formControlName="password" name="password" value=""
+                                type="password" class="form-control my-4 inp" type="text">
+                            <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+
+                                <small class="btn btn-danger px-5 form-control"
+                                    *ngIf="form.get('password')?.errors?.['required']">password is required</small>
+
+                            </div>
+
+                            <button class="btn btn-outline-dark w-100 text-white mt-3" [disabled]="form.status=='INVALID' ">Sign In</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="position-fixed   text-white text-center right-0  " style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header ">
+                <button type="button" class="btn-close  m-0" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body btn-dark text-white">
+            </div>
+        </div>
+    </div>
+
+</section>

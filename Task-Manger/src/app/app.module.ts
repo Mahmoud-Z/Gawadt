@@ -9,13 +9,15 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { NavbarComponent } from './navbar/navbar.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LogInComponent } from './log-in/log-in.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    LogInComponent
   ],
   imports: [
     BrowserModule,
