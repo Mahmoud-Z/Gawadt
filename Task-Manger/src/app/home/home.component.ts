@@ -65,8 +65,9 @@ export class HomeComponent implements OnInit {
   }
   getTasks(){
     this.Service.getFun('getTasks').subscribe(data => {
-      console.log(data);
       this.tasks=data;
+      console.log(data);
+      
     })
   }
   updateTask(machineId:any,taskId:any,machineIdBefore:any,taskIDsBefore:any) {
@@ -82,32 +83,59 @@ export class HomeComponent implements OnInit {
       })
     }
   }
-  onDrop(event:CdkDragDrop<string []>){
-    let oldTask=JSON.parse(JSON.stringify(event.container.data[0])).id;
-    if (event.previousContainer === event.container) {
-        moveItemInArray(
-        event.container.data,
+  startStop(event:any,id:any){
+    console.log(event.target.checked,id);
+    if (event.target.checked==true) {
+      this.Service.postFun('start',{id}).subscribe(data => {
+        this.getMachines()
+        this.getTasks()
+      })
+    } else {
+      this.Service.postFun('stop',{id}).subscribe(data => {
+        this.getMachines()
+      })
+    }
+  }
+  onDrop(event:CdkDragDrop<string []>,status:any){
+    if (status=='true') {
+      if (event.previousContainer === event.container) {
+          moveItemInArray(
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex
+        )
+      }
+      else{
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex
+        )
+      }
+      let taskIDs=[];
+      let taskIDsBefore=[];
+      for (let i = 0; i < event.container.data.length; i++) {
+        taskIDs.push(JSON.parse(JSON.stringify(event.container.data[i])).id)
+      }
+      for (let i = 0; i < event.previousContainer.data.length; i++) {
+        taskIDsBefore.push(JSON.parse(JSON.stringify(event.previousContainer.data[i])).id)
+      }
+      this.updateTask(event.container.id,taskIDs,event.previousContainer.id,taskIDsBefore)
+      console.log(
+        event.previousContainer.id,
+        event.container.id,
         event.previousIndex,
-        event.currentIndex
-      )
+        event.currentIndex);
+      // console.log(JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])).id,JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id,this.tasks[event.previousContainer.id][1],this.tasks[event.container.id][1]);
+      let oldTask;
+      if (JSON.stringify(event.previousContainer.data[event.currentIndex])===undefined) {
+        oldTask=JSON.parse(JSON.stringify(event.container.data[event.previousIndex])).id;
+      } else {
+        oldTask=JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])).id
+      }
+      console.log( event.previousContainer.id,event.previousContainer.data, event.container.id,event.container.data);
+      this.timeCalculation(JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id,oldTask)
     }
-    else{
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      )
-    }
-    let taskIDs=[];
-    let taskIDsBefore=[];
-    for (let i = 0; i < event.container.data.length; i++) {
-      taskIDs.push(JSON.parse(JSON.stringify(event.container.data[i])).id)
-    }
-    for (let i = 0; i < event.previousContainer.data.length; i++) {
-      taskIDsBefore.push(JSON.parse(JSON.stringify(event.previousContainer.data[i])).id)
-    }
-    this.updateTask(event.container.id,taskIDs,event.previousContainer.id,taskIDsBefore)
-    this.timeCalculation(JSON.parse(JSON.stringify(event.container.data[0])).id,oldTask)
   }
 }
