@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 
 export interface Permissions {
@@ -14,8 +14,8 @@ declare var $:any //declear $ to use jquery
 })
 export class AdminDashboardComponent implements OnInit {
   userForm = new FormGroup({
-    userName: new FormControl(''),
-    password: new FormControl(''),
+    userName: new FormControl('',Validators.compose([Validators.required])),
+    password: new FormControl('',Validators.compose([Validators.required])),
     checkbox0 : new FormControl(false, []),
     checkbox1 : new FormControl(false, []),
     checkbox2 : new FormControl(false, []),
@@ -24,8 +24,7 @@ export class AdminDashboardComponent implements OnInit {
 
   })
   machineForm = new FormGroup({
-    machineName: new FormControl(''),
-    password: new FormControl(''),
+    machineName: new FormControl('',Validators.compose([Validators.required])),
   })
   taskForm = new FormGroup({
     machineName: new FormControl(''),
@@ -35,6 +34,11 @@ export class AdminDashboardComponent implements OnInit {
   userFormValue:any;
   machineFormValue:any;
   show:any;
+  successMsg: boolean = false;
+  machineSuccessMsg: boolean = false;
+  FailMsg: boolean = false;
+  user: any;
+
   permissionData: Permissions[] = [
     { id: 0, name: 'Create/Edit User' },
     { id: 1, name: 'Create/Edit Machine' },
@@ -58,16 +62,12 @@ export class AdminDashboardComponent implements OnInit {
       $('.userIcon').click(function(){
       $('.chooser').css("left","0px")
 
-
-
-
   });
   $('.machineIcon').click(function(){
     $('.chooser').css("left","200px")
 
-    
   });
-  $('.checkIcon').click(function(){
+  $('.taskIcon').click(function(){
     $('.chooser').css("left","400px")
 
 
@@ -75,19 +75,32 @@ export class AdminDashboardComponent implements OnInit {
   });
   }
 
+  checkUser(){
+    this.Service.postFun('checkUser',this.userForm.value).subscribe(data => {
+      try {
+        this.user=data;
+        this.user=this.user[0].userName;
+        console.log(this.user);
+        this.FailMsg=true;
+        this.successMsg=false;
+      } catch (error) {
+        this.addUser()
+      }
+    })
+
+  }
   addUser() {
-    console.log(this.userForm.value);
-
     this.Service.postFun('addUser',this.userForm.value).subscribe(data => {
-      console.log(this.userForm.value);
-
+      this.successMsg=true;
+      this.FailMsg=false;
     })
 
   }
 
   addMachine(){
-    console.log(this.machineForm.value);
-
+    this.Service.postFun('importMachine',this.machineForm.value).subscribe(data => {
+      this.machineSuccessMsg=true;
+    })
   }
   addTask(){
     console.log(this.taskForm.value);

@@ -6,7 +6,7 @@
 
                 <div  class="col-md-4 d-flex justify-content-center align-items-center userIcon" (click)="asignShow('users')"><i class="fa-solid fa-users"></i></div>
                 <div class="col-md-4 d-flex justify-content-center align-items-center machineIcon" (click)="asignShow('machine')"><i class="fa-solid fa-gear"></i></div>
-                <div class="col-md-4 d-flex justify-content-center align-items-center checkIcon" (click)="asignShow('check')"><i class="fa-solid fa-list-check"></i></div>
+                <div class="col-md-4 d-flex justify-content-center align-items-center taskIcon" (click)="asignShow('task')"><i class="fa-solid fa-list-check"></i></div>
             </div>
             
         </div>
@@ -14,54 +14,41 @@
     <div class="container d-flex justify-content-center ">
             <div class="functionContainer mt-5 ">
 
-                <div *ngIf="show=='users'" class="row d-flex justify-content-center  userDiv" >
+                <div *ngIf="show =='users'" class="row d-flex justify-content-center  userDiv" >
                     <h3 class="text-center">ADD NEW USER</h3>
-                <form [formGroup]="userForm" (ngSubmit)="addUser()" class="" >
+                <form [formGroup]="userForm" (ngSubmit)="checkUser()"  >
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center mt-2">
                             <div class="form-floating mb-3 form-group w-50">
                                 <input type="text" class="form-control" id="floatingInput" placeholder="username" formControlName="userName">
                                 <label for="floatingInput">User Name</label>
+                                <div *ngIf="userForm.get('userName')?.invalid && userForm.get('userName')?.touched">
+
+                                    <small class="btn btn-danger px-5 form-control"
+                                        *ngIf="userForm.get('userName')?.errors?.['required']">user name is required</small>
+    
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 d-flex justify-content-center">
                             <div class="form-floating mb-3 form-group w-50" >
                               <input type="password" class="form-control" id="floatingPassword" placeholder="Password" formControlName="password">
                               <label for="floatingPassword">Password</label>
+                              <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+
+                                <small class="btn btn-danger px-5 form-control"
+                                    *ngIf="userForm.get('password')?.errors?.['required']">password is required</small>
+
                             </div>
+                            </div>
+                            
                         </div>
 
                       <div class="col-md-12  ">
                           <div class="container d-flex justify-content-center ">
                           <div class="row w-100">
-                      <!-- Default inline 1-->
                     
                         <div class="col-md-12">
-                            <!-- <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="permission" formControlName="permission" />
-                                <label class="form-check-label" for="flexCheckDefault">Create/Edit User</label>
-                              </div>
-                              
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="2" id="flexCheckChecked" name="permission" formControlName="permission"  />
-                                <label class="form-check-label" for="flexCheckChecked">Create/Edit Machine</label>
-                              </div>
-
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="3" id="flexCheckChecked" name="permission" formControlName="permission" />
-                                <label class="form-check-label" for="flexCheckChecked">Create/Edit Task</label>
-                              </div>
-
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="4" id="flexCheckChecked"name="permission" formControlName="permission"  />
-                                <label class="form-check-label" for="flexCheckChecked">Reports</label>
-                              </div>
-
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="5" id="flexCheckChecked" name="permission" formControlName="permission" />
-                                <label class="form-check-label" for="flexCheckChecked">Permission</label>
-                              </div> -->
-
                               <div class="row w-100 d-flex justify-content-center ">    
                               <div *ngFor="let Permission of permissionData " class="col-md-2">
                                      <div class="form-check">
@@ -80,74 +67,59 @@
                     </div>
                 </div>
                       <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100 mt-3" >
-                  <button type="submit" class="btn btn-success btn-lg btn-block">Submit Application</button>
+                  <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="userForm.status=='INVALID'">Submit Application</button>
+                      </div>
+                      <div class="row d-flex justify-content-center"  *ngIf="successMsg">
+                        <div class="col-md-6">
+                          <p class="alert alert-success text-center">
+                              <strong>Registration Success!</strong>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="row d-flex justify-content-center"  *ngIf="FailMsg">
+                        <div class="col-md-6">
+                          <p class="alert alert-danger text-center">
+                              <strong>User already exists!</strong>
+                          </p>
+                        </div>
                       </div>
                   </form>
                 </div>
-                 <div *ngIf="show=='machine'" class="row d-flex justify-content-center  machineDiv" >
-                <h3 class="text-center">ADD NEW MACHINE</h3>
 
+                 <div *ngIf="show =='machine'" class="row d-flex justify-content-center  machineDiv" >
+                <h3 class="text-center">ADD NEW MACHINE</h3>
                 <form [formGroup]="machineForm" (ngSubmit)="addMachine()" class="" >
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center mt-2">
                             <div class="form-floating mb-3 form-group w-50">
                                 <input type="text" class="form-control" id="floatingInput" placeholder="machineName" formControlName="machineName">
                                 <label for="floatingInput">Machine Name</label>
+                                <div *ngIf="machineForm.get('machineName')?.invalid && machineForm.get('machineName')?.touched">
+
+                                    <small class="btn btn-danger px-5 form-control"
+                                        *ngIf="machineForm.get('machineName')?.errors?.['required']">Machine Name is required</small>
+    
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12 d-flex justify-content-center">
-                            <div class="form-floating mb-3 form-group w-50" >
-                              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" formControlName="password">
-                              <label for="floatingPassword">Password</label>
-                            </div>
-                        </div>
+
                     </div>
 
                     <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100" >
-                        <button type="submit" class="btn btn-success btn-lg btn-block">Submit Application</button>
+                        <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="machineForm.status=='INVALID'"> Submit Application</button>
                             </div>
-                  </form>
-                <form [formGroup]="userForm" (ngSubmit)="addTask()" class="w-75  mt-4 d-flex justify-content-center invisible" >
-                    
-                    <div class="form-floating mb-3 col-md-6 form-group">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="username" formControlName="userName">
-                        <label for="floatingInput">User Name</label>
-                      </div>
-                      <div class="form-floating mb-3 col-md-6 form-group" >
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" formControlName="password">
-                        <label for="floatingPassword">Password</label>
-                      </div>
-
-                      <div class="col-md-3">
-                          <div class="row">
-                      <!-- Default inline 1-->
-                       <div class="custom-control custom-radio custom-control-inline col-md-3">
-                      <input type="radio" value="SuperAdmin" class="custom-control-input" id="defaultInline1" name="type" formControlName="type" >
-                      <label class="custom-control-label" for="defaultInline1">SuperAdmin</label>
-                      </div>
-  
-                     <!-- Default inline 2-->
-                        <div class="custom-control custom-radio custom-control-inline col-md-3">
-                          <input type="radio" value="Admin" class="custom-control-input" id="defaultInline2" name="type" formControlName="type">
-                         <label class="custom-control-label" for="defaultInline2">Admin</label>
-                        </div>
-  
-                     <!-- Default inline 3-->
-                         <div class="custom-control custom-radio custom-control-inline col-md-3">
-                          <input type="radio" value="Employee" class="custom-control-input" id="defaultInline3" name="type" formControlName="type">
-                         <label class="custom-control-label" for="defaultInline3">Employee</label>
-                         </div>
-                        </div>
-                    </div>
-                      <div class=" mb-3 col-md-6 form-group" >
-                  <button type="submit" class="  btn btn-primary ">Submit Application</button>
-                      </div>
+                            <div class="row d-flex justify-content-center"  *ngIf="machineSuccessMsg">
+                                <div class="col-md-6">
+                                  <p class="alert alert-success text-center">
+                                      <strong>Machine have been added Successfully!</strong>
+                                  </p>
+                                </div>
+                              </div>
                   </form>
                  </div>
-                 <div *ngIf="show=='check'" class="row d-flex justify-content-center  taskDiv" >
-                    <h3 class="text-center">ADD NEW TASK</h3>
-    
-                    <form [formGroup]="machineForm" (ngSubmit)="addMachine()" class="" >
+
+                 <div *ngIf="show =='task'" class="row d-flex justify-content-center  taskDiv" >    
+                    <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="" >
                         <div class="row">
                             <div class="col-md-12 d-flex justify-content-center mt-2">
                                 <div class="form-floating mb-3 form-group w-50">
@@ -166,44 +138,10 @@
                         <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100" >
                             <button type="submit" class="btn btn-success btn-lg btn-block">Submit Application</button>
                                 </div>
+   
                       </form>
-                                      <form [formGroup]="userForm" (ngSubmit)="addUser()" class="w-75  mt-4 d-flex justify-content-center invisible" >
-                        
-                        <div class="form-floating mb-3 col-md-6 form-group">
-                            <input type="text" class="form-control" id="floatingInput" placeholder="username" formControlName="userName">
-                            <label for="floatingInput">User Name</label>
-                          </div>
-                          <div class="form-floating mb-3 col-md-6 form-group" >
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" formControlName="password">
-                            <label for="floatingPassword">Password</label>
-                          </div>
-    
-                          <div class="col-md-3">
-                              <div class="row">
-                          <!-- Default inline 1-->
-                           <div class="custom-control custom-radio custom-control-inline col-md-3">
-                          <input type="radio" value="SuperAdmin" class="custom-control-input" id="defaultInline1" name="type" formControlName="type" >
-                          <label class="custom-control-label" for="defaultInline1">SuperAdmin</label>
-                          </div>
-      
-                         <!-- Default inline 2-->
-                            <div class="custom-control custom-radio custom-control-inline col-md-3">
-                              <input type="radio" value="Admin" class="custom-control-input" id="defaultInline2" name="type" formControlName="type">
-                             <label class="custom-control-label" for="defaultInline2">Admin</label>
-                            </div>
-      
-                         <!-- Default inline 3-->
-                             <div class="custom-control custom-radio custom-control-inline col-md-3">
-                              <input type="radio" value="Employee" class="custom-control-input" id="defaultInline3" name="type" formControlName="type">
-                             <label class="custom-control-label" for="defaultInline3">Employee</label>
-                             </div>
-                            </div>
-                        </div>
-                          <div class=" mb-3 col-md-6 form-group" >
-                      <button type="submit" class="  btn btn-primary ">Submit Application</button>
-                          </div>
-                      </form>
-                     </div>
+
+                 </div>
         </div>
 
     </div>
