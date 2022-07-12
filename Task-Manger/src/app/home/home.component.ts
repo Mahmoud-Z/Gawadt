@@ -17,9 +17,11 @@ export class HomeComponent implements OnInit {
   counters:any;
   machineIds:any;
   remainingTime: any;
+  taskDetails: any;
   constructor(public Service:ApiService) {
     this.getMachines()
-    this.getTasks() 
+    this.getTasks()
+    this.viewTask(0)
     interval(1000).subscribe((ev)=>{
       this.counters={}
       for (let i = 0; i < Object.keys(this.tasks).length; i++) {
@@ -77,11 +79,13 @@ export class HomeComponent implements OnInit {
     })
   }
   timeCalculation(id:any,oldTask:any){
-    if (oldTask!=id) {
-      this.Service.postFun('changeTime',{id,oldTask}).subscribe(data => {
+    console.log("oldTask : ",oldTask,"id : ",id);
+    // if (oldTask!=id) {
+    console.log("------------------------------------------------------");
+    this.Service.postFun('changeTime',{id,oldTask}).subscribe(data => {
         this.getTasks()
       })
-    }
+    // }
   }
   startStop(event:any,id:any){
     console.log(event.target.checked,id);
@@ -95,6 +99,12 @@ export class HomeComponent implements OnInit {
         this.getMachines()
       })
     }
+  }
+  viewTask(id:any){
+    this.Service.postFun('viewTask',{id}).subscribe(data => {
+      this.taskDetails=data;
+      console.log(this.taskDetails);
+    })
   }
   onDrop(event:CdkDragDrop<string []>,status:any){
     if (status=='true') {
@@ -128,13 +138,14 @@ export class HomeComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
       // console.log(JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])).id,JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id,this.tasks[event.previousContainer.id][1],this.tasks[event.container.id][1]);
+      console.log("Condition",event.container.data[event.currentIndex],event.currentIndex,event.container.data);
+      console.log("Condition2",event.previousContainer.data[event.previousIndex],event.previousIndex,event.previousContainer.data);
       let oldTask;
-      if (JSON.stringify(event.previousContainer.data[event.currentIndex])===undefined) {
-        oldTask=JSON.parse(JSON.stringify(event.container.data[event.previousIndex])).id;
+      if (JSON.stringify(event.previousContainer.data[event.previousIndex])==undefined) {
+        oldTask=JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id;
       } else {
         oldTask=JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])).id
       }
-      console.log( event.previousContainer.id,event.previousContainer.data, event.container.id,event.container.data);
       this.timeCalculation(JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id,oldTask)
     }
   }

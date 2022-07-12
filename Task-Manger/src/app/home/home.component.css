@@ -48,3 +48,17 @@
     font-size: xx-small;
 
   }
+
+  /* left-side-bar */
+  .left-side-bar{
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-radius: 10px;
+  }
+  .right-side-bar{
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-radius: 10px;
+  }
