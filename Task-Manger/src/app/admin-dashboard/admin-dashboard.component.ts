@@ -30,6 +30,13 @@ export class AdminDashboardComponent implements OnInit {
     machineName: new FormControl(''),
     password: new FormControl(''),
   })
+  itemForm = new FormGroup({
+    itemName: new FormControl('',Validators.compose([Validators.required])),
+    itemPrice: new FormControl('',Validators.compose([Validators.required])),
+  })
+  customerForm = new FormGroup({
+    customerName: new FormControl('',Validators.compose([Validators.required]))
+  })
   
   userFormValue:any;
   machineFormValue:any;
@@ -37,6 +44,9 @@ export class AdminDashboardComponent implements OnInit {
   successMsg: boolean = false;
   machineSuccessMsg: boolean = false;
   FailMsg: boolean = false;
+  ItemSuccessMsg: boolean = false;
+  CustomerSuccessMsg: boolean = false;
+
   user: any;
 
   permissionData: Permissions[] = [
@@ -59,24 +69,27 @@ export class AdminDashboardComponent implements OnInit {
 
 
   ngOnInit(): void {
-      $('.userIcon').click(function(){
-      $('.chooser').css("left","0px")
-
+  $('.userIcon').click(function(){
+   $('.chooser').css("left","0px")
   });
   $('.machineIcon').click(function(){
-    $('.chooser').css("left","200px")
-
+    $('.chooser').css("left","120px")
+  });
+  $('.itemIcon').click(function(){
+    $('.chooser').css("left","230px")
   });
   $('.taskIcon').click(function(){
-    $('.chooser').css("left","400px")
-
-
-      
+    $('.chooser').css("left","330px")
+  });
+  $('.customerIcon').click(function(){
+    $('.chooser').css("left","450px")
   });
   }
 
+  
   checkUser(){
     this.Service.postFun('checkUser',this.userForm.value).subscribe(data => {
+
       try {
         this.user=data;
         this.user=this.user[0].userName;
@@ -102,9 +115,20 @@ export class AdminDashboardComponent implements OnInit {
       this.machineSuccessMsg=true;
     })
   }
+  addItem(){
+    this.Service.postFun('importItem',this.itemForm.value).subscribe(data => {
+      this.ItemSuccessMsg=true;
+    })
+  }
+
   addTask(){
     console.log(this.taskForm.value);
-
+  }
+  addCustomer(){
+    this.Service.postFun('importCustomer',this.customerForm.value).subscribe(data => {
+      console.log(this.customerForm.value);
+      this.CustomerSuccessMsg=true;
+    })
   }
   
 
