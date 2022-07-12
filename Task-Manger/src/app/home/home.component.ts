@@ -3,6 +3,7 @@ import { ApiService } from '../services/api.service';
 import { CdkDragDrop,moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { interval } from 'rxjs';
 import { end } from '@popperjs/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -14,13 +15,24 @@ export class HomeComponent implements OnInit {
   tasks:any;
   theArray:any;
   task:any;
+  tasksRight:any;
   counters:any;
   machineIds:any;
+  machinePermission:boolean=false;
+  taskPermission:boolean=false;
   remainingTime: any;
   taskDetails: any;
+  permissionForm = new FormGroup({
+    permissionItemId: new FormControl('',Validators.compose([Validators.required])),
+    reason: new FormControl('',Validators.compose([Validators.required])),
+    startTime: new FormControl(''),
+    duration: new FormControl('',Validators.compose([Validators.required])),
+    type: new FormControl('')
+  })
   constructor(public Service:ApiService) {
     this.getMachines()
     this.getTasks()
+    this.getTasksRight()
     this.viewTask(0)
     interval(1000).subscribe((ev)=>{
       this.counters={}
@@ -72,6 +84,11 @@ export class HomeComponent implements OnInit {
       
     })
   }
+  getTasksRight(){
+    this.Service.getFun('getTasksRight').subscribe(data => {
+      this.tasksRight=data;
+    })
+  }
   updateTask(machineId:any,taskId:any,machineIdBefore:any,taskIDsBefore:any) {
     this.Service.postFun('updateTask',{machineId,taskId,machineIdBefore,taskIDsBefore}).subscribe(data => {
       console.log(data);
@@ -104,6 +121,26 @@ export class HomeComponent implements OnInit {
     this.Service.postFun('viewTask',{id}).subscribe(data => {
       this.taskDetails=data;
       console.log(this.taskDetails);
+    })
+  }
+  switchPermission(event:any){
+    console.log();
+    if ((<HTMLInputElement>event.target).value =='taskPermission')
+    {
+      this.machinePermission=false;
+      this.taskPermission=true;
+
+    }
+    else if ((<HTMLInputElement>event.target).value =='machinePermission'){
+      this.taskPermission=false;
+      this.machinePermission=true;
+
+    }
+  }
+  Permssion(){
+
+    this.Service.postFun('addPermission',this.permissionForm.value).subscribe(data => {
+
     })
   }
   onDrop(event:CdkDragDrop<string []>,status:any){

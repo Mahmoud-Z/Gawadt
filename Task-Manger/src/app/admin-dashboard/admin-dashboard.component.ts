@@ -89,7 +89,6 @@ export class AdminDashboardComponent implements OnInit {
   
   checkUser(){
     this.Service.postFun('checkUser',this.userForm.value).subscribe(data => {
-
       try {
         this.user=data;
         this.user=this.user[0].userName;

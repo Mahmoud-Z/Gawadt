@@ -1,3 +1,64 @@
+<!-- Modal -->
+<div class="modal fade" id="Permission" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+     <form [formGroup]="permissionForm" (ngSubmit)="Permssion()"  >
+        <div class="modal-body text-center">
+            <div>
+            <label class="p-3">Permission Type</label>
+            <select (change)="switchPermission($event)" name="PTybe" id="PTybe" formControlName="type">
+                <option value="machinePermission">Stop Machine Permission</option>
+                <option value="taskPermission">Transfer Task Permission</option>
+              </select>
+            </div>
+            <hr>
+              <div *ngIf="machinePermission" class="machinePermissionDiv">
+                <label class="p-2">Machine Name</label>
+                <select  name="reason" id="reason" formControlName="permissionItemId" >
+                    <option *ngFor="let i of machines" [value]="i.id">{{i.name}}</option>
+                  </select>
+                <label class="p-2">Reason</label>
+                <select  name="reason" id="reason" formControlName="reason" >
+                    <option value="Break">Break</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="shift ending">Shift Ending</option>
+                  </select>
+                  <label class="p-3">Duration</label>
+                  <input type="number" placeholder="Permission Duration" formControlName="duration">
+             </div>
+              <div  *ngIf="taskPermission" class="taskPermissionDiv">
+                <label class="p-2">Task Name</label>
+                <select  name="reason" id="reason" formControlName="permissionItemId" >
+                    <option *ngFor="let i of tasksRight" [value]="i.id">{{i.name}}</option>
+                  </select>   
+                  <label class="p-2">Reason</label>
+                  <select  name="reason" id="reason" formControlName="reason" >
+                      <option value="Task Finished">Task Finished</option>
+                      <option value="Task Moving">Task Moving</option>
+                    </select>         
+                
+              </div>
+
+        </div>
+         <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+
+     </form>
+      </div>
+    </div>
+  </div>
+
+<!------------------------------------->
+
+
 <section>
     <div class="row">
     <div class="col-md-2 left-side-bar">
@@ -9,7 +70,7 @@
     </div>
     <div class="col-md-8">
     <div class="mt-5">
-        <div class=" col-md-12 d-flex justify-content-center mb-3"><button class="btn btn-primary "  data-bs-toggle="modal" data-bs-target="#addMachine" > Add Machine</button></div>
+        <div class=" col-md-12 d-flex justify-content-center mb-3"><button class="btn btn-primary "  data-bs-toggle="modal" data-bs-target="#Permission" > Request Permission <i class="fa-solid fa-right-left"></i></button></div>
                 <div class="row justify-content-center">
                     <div class="col-md-4 px-21 mt-2" *ngFor="let i of machines">
                         <div class="card " style="width: 100%;">
