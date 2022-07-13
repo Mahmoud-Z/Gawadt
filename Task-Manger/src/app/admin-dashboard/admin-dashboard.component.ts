@@ -92,7 +92,7 @@ export class AdminDashboardComponent implements OnInit {
       try {
         this.user=data;
         this.user=this.user[0].userName;
-        console.log(this.user);
+        console.log(this.user[0].userName);
         this.FailMsg=true;
         this.successMsg=false;
       } catch (error) {
@@ -101,6 +101,9 @@ export class AdminDashboardComponent implements OnInit {
     })
 
   }
+
+
+
   addUser() {
     this.Service.postFun('addUser',this.userForm.value).subscribe(data => {
       this.successMsg=true;

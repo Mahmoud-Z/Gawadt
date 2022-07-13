@@ -21,7 +21,7 @@ export class LogInComponent implements OnInit {
   login(){
     this.Service.postFun('logIn',this.form.value).subscribe(data => {
 
-      if (data == "done") {
+      if (data.message == "done") {
         this._Router.navigate(['/home'])
         localStorage.setItem("token",data.token)
       }

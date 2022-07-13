@@ -13,4 +13,8 @@ export class ApiService {
   postFun(endPoint:any,body:any){
     return this.http.post<any>(this.baseURL+endPoint,body)
   }
+  isLoggedIn()
+  {
+  return !!localStorage.getItem("token")
+  }
 }
