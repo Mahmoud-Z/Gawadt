@@ -1,0 +1,13 @@
+.permissionCont {
+   background-color: rgb(33, 37, 41);
+    width: 1000px;
+    height: 800px;
+    border-color: aliceblue;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+}
+
+.permissionbar {
+border: 5px;
+border-color: aliceblue;
+}

@@ -3,8 +3,12 @@ import { ApiService } from '../services/api.service';
 import { CdkDragDrop,moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { interval } from 'rxjs';
 import { end } from '@popperjs/core';
+import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -138,7 +142,6 @@ export class HomeComponent implements OnInit {
     }
   }
   Permssion(){
-
     this.Service.postFun('addPermission',this.permissionForm.value).subscribe(data => {
 
     })

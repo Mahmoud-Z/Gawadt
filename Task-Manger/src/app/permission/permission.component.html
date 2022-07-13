@@ -1,0 +1,26 @@
+<section class="mt-1">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 permissionCont">
+                <div class="row">
+                    <div class="col-md-12 border border-white " *ngFor="let i of Permissions">
+                        <div class="row" *ngIf="i.submitted=='TRUE'">
+                        <div class="col-md-8">
+                            <p class="text-white">
+                                User UserName is requested to {{i.type}}  {{i.permissionItemId.split("/")[1]}}  for {{i.reason}} at {{i.startTime}} for {{i.duration}} hour
+                            </p>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end align-items-center">
+                            <button (click)="Accept(i.permissionItemId.split('/')[0],i.type,i.permissionId)" type="button" class="btn btn-success me-2">Accept</button>
+                            <button type="button" class="btn btn-danger">Decline</button>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>

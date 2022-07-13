@@ -10,6 +10,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LogInComponent } from './log-in/log-in.component';
+import { PermissionComponent } from './permission/permission.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { LogInComponent } from './log-in/log-in.component';
     HomeComponent,
     NavbarComponent,
     AdminDashboardComponent,
-    LogInComponent
+    LogInComponent,
+    PermissionComponent
   ],
   imports: [
     BrowserModule,
