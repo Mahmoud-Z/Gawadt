@@ -27,12 +27,32 @@ export class AdminDashboardComponent implements OnInit {
     machineName: new FormControl('',Validators.compose([Validators.required])),
   })
   taskForm = new FormGroup({
-    machineName: new FormControl(''),
-    password: new FormControl(''),
+    CustomerName: new FormControl('',Validators.compose([Validators.required])),
+    CustomerCode: new FormControl('',Validators.compose([Validators.required])),
+    OrderReference: new FormControl('',Validators.compose([Validators.required])),
+    OrderStatus: new FormControl('',Validators.compose([Validators.required])),
+    OrderNumber: new FormControl('',Validators.compose([Validators.required])),
+    OrderTypeCode: new FormControl('',Validators.compose([Validators.required])),
+    OrderTypeName: new FormControl('',Validators.compose([Validators.required])),
+    OrderPriority: new FormControl('',Validators.compose([Validators.required])),
+    OrderTotalAmount: new FormControl('',Validators.compose([Validators.required])),
+    PiecesPreSheets: new FormControl('',Validators.compose([Validators.required])),
+    OrderSheets: new FormControl('',Validators.compose([Validators.required])),
+    PiecePrice: new FormControl('',Validators.compose([Validators.required])),
+    TotalPrice: new FormControl('',Validators.compose([Validators.required])),
+    SheetPrice: new FormControl('',Validators.compose([Validators.required])),
+    CNC: new FormControl('',Validators.compose([Validators.required])),
+    CTB: new FormControl('',Validators.compose([Validators.required])),
+    Stamp: new FormControl('',Validators.compose([Validators.required])),
+    StepCode: new FormControl('',Validators.compose([Validators.required])),
+    StepName: new FormControl('',Validators.compose([Validators.required])),
+    StepFactor: new FormControl('',Validators.compose([Validators.required])),
   })
   itemForm = new FormGroup({
     itemName: new FormControl('',Validators.compose([Validators.required])),
     itemPrice: new FormControl('',Validators.compose([Validators.required])),
+
+
   })
   customerForm = new FormGroup({
     customerName: new FormControl('',Validators.compose([Validators.required]))
@@ -132,6 +152,8 @@ export class AdminDashboardComponent implements OnInit {
       this.CustomerSuccessMsg=true;
     })
   }
-  
+  subm(){
+
+  }
 
 }

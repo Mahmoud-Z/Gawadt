@@ -4,202 +4,604 @@
             <div class="chooser"></div>
             <div class="row  d-flex justify-content-center h-100 ">
 
-                <div  class="col-md-2 d-flex justify-content-center align-items-center userIcon" (click)="asignShow('users')"><i class="fa-solid fa-user-gear"></i></div>
-                <div class="col-md-2 d-flex justify-content-center align-items-center machineIcon" (click)="asignShow('machine')"><i class="fa-solid fa-gear"></i></div>
-                <div class="col-md-2 d-flex justify-content-center align-items-center itemIcon" (click)="asignShow('item')"><i class="fa-solid fa-basket-shopping"></i></div>
-                <div class="col-md-2 d-flex justify-content-center align-items-center taskIcon" (click)="asignShow('task')"><i class="fa-solid fa-list-check"></i></div>
-                <div class="col-md-2 d-flex justify-content-center align-items-center customerIcon" (click)="asignShow('customer')"><i class="fa-solid fa-users"></i></div>
+                <div class="col-md-2 d-flex justify-content-center align-items-center userIcon"
+                    (click)="asignShow('users')"><i class="fa-solid fa-user-gear"></i></div>
+                <div class="col-md-2 d-flex justify-content-center align-items-center machineIcon"
+                    (click)="asignShow('machine')"><i class="fa-solid fa-gear"></i></div>
+                <div class="col-md-2 d-flex justify-content-center align-items-center itemIcon"
+                    (click)="asignShow('item')"><i class="fa-solid fa-basket-shopping"></i></div>
+                <div class="col-md-2 d-flex justify-content-center align-items-center taskIcon"
+                    (click)="asignShow('task')"><i class="fa-solid fa-list-check"></i></div>
+                <div class="col-md-2 d-flex justify-content-center align-items-center customerIcon"
+                    (click)="asignShow('customer')"><i class="fa-solid fa-users"></i></div>
 
 
             </div>
-            
+
         </div>
     </div>
     <div class="container d-flex justify-content-center ">
-            <div class="functionContainer mt-5 ">
-
-                <div *ngIf="show =='users'" class="row d-flex justify-content-center  userDiv" >
-                    <h3 class="text-center">ADD NEW USER</h3>
-                <form [formGroup]="userForm" (ngSubmit)="checkUser()"  >
+        <div class="functionContainer mt-5 ">
+            <div *ngIf="show =='users'" class="row d-flex justify-content-center  userDiv">
+                <h3 class="text-center">ADD NEW USER</h3>
+                <form [formGroup]="userForm" (ngSubmit)="checkUser()">
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center mt-2">
                             <div class="form-floating mb-3 form-group w-50">
-                                <input type="text" class="form-control" id="floatingInput" placeholder="username" formControlName="userName">
+                                <input type="text" class="form-control" id="floatingInput" placeholder="username"
+                                    formControlName="userName">
                                 <label for="floatingInput">User Name</label>
                                 <div *ngIf="userForm.get('userName')?.invalid && userForm.get('userName')?.touched">
 
                                     <small class="btn btn-danger px-5 form-control"
-                                        *ngIf="userForm.get('userName')?.errors?.['required']">user name is required</small>
-    
+                                        *ngIf="userForm.get('userName')?.errors?.['required']">user name is
+                                        required</small>
+
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 d-flex justify-content-center">
-                            <div class="form-floating mb-3 form-group w-50" >
-                              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" formControlName="password">
-                              <label for="floatingPassword">Password</label>
-                              <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+                            <div class="form-floating mb-3 form-group w-50">
+                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                                    formControlName="password">
+                                <label for="floatingPassword">Password</label>
+                                <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
 
-                                <small class="btn btn-danger px-5 form-control"
-                                    *ngIf="userForm.get('password')?.errors?.['required']">password is required</small>
+                                    <small class="btn btn-danger px-5 form-control"
+                                        *ngIf="userForm.get('password')?.errors?.['required']">password is
+                                        required</small>
 
+                                </div>
                             </div>
-                            </div>
-                            
+
                         </div>
 
-                      <div class="col-md-12  ">
-                          <div class="container d-flex justify-content-center ">
-                          <div class="row w-100">
-                    
-                        <div class="col-md-12">
-                              <div class="row w-100 d-flex justify-content-center ">    
-                              <div *ngFor="let Permission of permissionData " class="col-md-2">
-                                     <div class="form-check">
-                                    <input  class="form-check-input" type="checkbox"  id="flexCheckChecked" name="permission"
-                                    formControlName="checkbox{{ Permission.id }}"/>
-                                    <label class="form-check-label" for="flexCheckChecked">{{ Permission.name }}
-                                    </label>
-                                  </div>
-                            </div>
-                            </div>
+                        <div class="col-md-12  ">
+                            <div class="container d-flex justify-content-center ">
+                                <div class="row w-100">
+
+                                    <div class="col-md-12">
+                                        <div class="row w-100 d-flex justify-content-center ">
+                                            <div *ngFor="let Permission of permissionData " class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexCheckChecked" name="permission"
+                                                        formControlName="checkbox{{ Permission.id }}" />
+                                                    <label class="form-check-label" for="flexCheckChecked">{{
+                                                        Permission.name }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
-                             </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100 mt-3">
+                        <button type="submit" class="btn btn-success btn-lg btn-block"
+                            [disabled]="userForm.status=='INVALID'">Submit Application</button>
                     </div>
-                </div>
-                      <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100 mt-3" >
-                  <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="userForm.status=='INVALID'">Submit Application</button>
-                      </div>
-                      <div class="row d-flex justify-content-center"  *ngIf="successMsg">
+                    <div class="row d-flex justify-content-center" *ngIf="successMsg">
                         <div class="col-md-6">
-                          <p class="alert alert-success text-center">
-                              <strong>Registration Success!</strong>
-                          </p>
+                            <p class="alert alert-success text-center">
+                                <strong>Registration Success!</strong>
+                            </p>
                         </div>
-                      </div>
-                      <div class="row d-flex justify-content-center"  *ngIf="FailMsg">
+                    </div>
+                    <div class="row d-flex justify-content-center" *ngIf="FailMsg">
                         <div class="col-md-6">
-                          <p class="alert alert-danger text-center">
-                              <strong>User already exists!</strong>
-                          </p>
+                            <p class="alert alert-danger text-center">
+                                <strong>User already exists!</strong>
+                            </p>
                         </div>
-                      </div>
-                  </form>
-                </div>
-                 <div *ngIf="show =='machine'" class="row d-flex justify-content-center  machineDiv" >
+                    </div>
+                </form>
+            </div>
+            <div *ngIf="show =='machine'" class="row d-flex justify-content-center  machineDiv">
                 <h3 class="text-center">ADD NEW MACHINE</h3>
-                <form [formGroup]="machineForm" (ngSubmit)="addMachine()" class="" >
+                <form [formGroup]="machineForm" (ngSubmit)="addMachine()" class="">
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center mt-2">
                             <div class="form-floating mb-3 form-group w-50">
-                                <input type="text" class="form-control" id="floatingInput" placeholder="machineName" formControlName="machineName">
+                                <input type="text" class="form-control" id="floatingInput" placeholder="machineName"
+                                    formControlName="machineName">
                                 <label for="floatingInput">Machine Name</label>
-                                <div *ngIf="machineForm.get('machineName')?.invalid && machineForm.get('machineName')?.touched">
+                                <div
+                                    *ngIf="machineForm.get('machineName')?.invalid && machineForm.get('machineName')?.touched">
                                     <small class="btn btn-danger px-5 form-control"
-                                        *ngIf="machineForm.get('machineName')?.errors?.['required']">Machine Name is required</small>
-    
+                                        *ngIf="machineForm.get('machineName')?.errors?.['required']">Machine Name is
+                                        required</small>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100" >
-                        <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="machineForm.status=='INVALID'"> Submit Application</button>
-                            </div>
-                            <div class="row d-flex justify-content-center"  *ngIf="machineSuccessMsg">
-                                <div class="col-md-6">
-                                  <p class="alert alert-success text-center">
-                                      <strong>Machine have been added Successfully!</strong>
-                                  </p>
-                                </div>
-                              </div>
-                  </form>
-                 </div>
-                 <div *ngIf="show =='item'" class="row d-flex justify-content-center itemDiv" >    
-                    <h3 class="text-center">ADD NEW ITEM</h3>
-                    <form [formGroup]="itemForm" (ngSubmit)="addItem()" class="" >
-                        <div class="row">
-                            <div class="col-md-12 d-flex justify-content-center mt-2">
-                                <div class="form-floating mb-3 form-group w-50">
-                                    <input type="text" class="form-control" id="floatingInput" placeholder="Item Name" formControlName="itemName">
-                                    <label for="floatingInput">Item Name</label>
-                                    <div *ngIf="itemForm.get('itemName')?.invalid && itemForm.get('itemName')?.touched">
-                                        <small class="btn btn-danger px-5 form-control"
-                                            *ngIf="itemForm.get('itemName')?.errors?.['required']">item Name is required</small>
-                                    </div>
-                                </div>
-      
-                            </div>
-                            <div class="col-md-12 d-flex justify-content-center">
-                                <div class="form-floating mb-3 form-group w-50" >
-                                  <input type="number" class="form-control" id="floatingPassword" placeholder="Item Price" formControlName="itemPrice">
-                                  <label for="floatingPrice">Item Price</label>
-                                  <div *ngIf="itemForm.get('itemPrice')?.invalid && itemForm.get('itemPrice')?.touched">
+                    <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100">
+                        <button type="submit" class="btn btn-success btn-lg btn-block"
+                            [disabled]="machineForm.status=='INVALID'"> Submit Application</button>
+                    </div>
+                    <div class="row d-flex justify-content-center" *ngIf="machineSuccessMsg">
+                        <div class="col-md-6">
+                            <p class="alert alert-success text-center">
+                                <strong>Machine have been added Successfully!</strong>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div *ngIf="show =='item'" class="row d-flex justify-content-center itemDiv">
+                <h3 class="text-center">ADD NEW ITEM</h3>
+                <form [formGroup]="itemForm" (ngSubmit)="addItem()" class="">
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            <div class="form-floating mb-3 form-group w-50">
+                                <input type="text" class="form-control" id="floatingInput" placeholder="Item Name"
+                                    formControlName="itemName">
+                                <label for="floatingInput">Item Name</label>
+                                <div *ngIf="itemForm.get('itemName')?.invalid && itemForm.get('itemName')?.touched">
                                     <small class="btn btn-danger px-5 form-control"
-                                        *ngIf="itemForm.get('itemPrice')?.errors?.['required']">Item Price is required</small>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100" >
-                            <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="itemForm.status=='INVALID'">Submit Application</button>
-                                </div>
-   
-                      </form>
-
-                 </div>
-                 <div *ngIf="show =='task'" class="row d-flex justify-content-center  taskDiv" >   
-                    <h3 class="text-center">ADD NEW Order</h3> 
-                    <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="" >
-                        <div class="row">
-                            <div class="col-md-12 d-flex justify-content-center mt-2">
-                                <div class="form-floating mb-3 form-group w-50">
-                                    <input type="text" class="form-control" id="floatingInput" placeholder="machineName" formControlName="machineName">
-                                    <label for="floatingInput">Machine Name</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12 d-flex justify-content-center">
-                                <div class="form-floating mb-3 form-group w-50" >
-                                  <input type="password" class="form-control" id="floatingPassword" placeholder="Password" formControlName="password">
-                                  <label for="floatingPassword">Password</label>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100" >
-                            <button type="submit" class="btn btn-success btn-lg btn-block">Submit Application</button>
-                                </div>
-   
-                      </form>
-
-                 </div>
-                 <div *ngIf="show =='customer'" class="row d-flex justify-content-center  customerDiv" >   
-                    <h3 class="text-center">ADD NEW CUSTOMER</h3> 
-                    <form [formGroup]="customerForm" (ngSubmit)="addCustomer()" class="" >
-                        <div class="row">
-                            <div class="col-md-12 d-flex justify-content-center mt-2">
-                                <div class="form-floating mb-3 form-group w-50">
-                                    <input type="text" class="form-control" id="floatingInput" placeholder="Customer Name" formControlName="customerName">
-                                    <label for="floatingInput">Customer Name</label>
-                                    <div *ngIf="customerForm.get('customerName')?.invalid && customerForm.get('customerName')?.touched">
-                                        <small class="btn btn-danger px-5 form-control"
-                                            *ngIf="customerForm.get('customerName')?.errors?.['required']">Customer Name is required</small>
-                                    </div>
+                                        *ngIf="itemForm.get('itemName')?.errors?.['required']">item Name is
+                                        required</small>
                                 </div>
                             </div>
 
                         </div>
-    
-                        <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100" >
-                            <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="customerForm.status=='INVALID'">Submit Application</button>
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <div class="form-floating mb-3 form-group w-50">
+                                <input type="number" class="form-control" id="floatingPassword" placeholder="Item Price"
+                                    formControlName="itemPrice">
+                                <label for="floatingPrice">Item Price</label>
+                                <div *ngIf="itemForm.get('itemPrice')?.invalid && itemForm.get('itemPrice')?.touched">
+                                    <small class="btn btn-danger px-5 form-control"
+                                        *ngIf="itemForm.get('itemPrice')?.errors?.['required']">Item Price is
+                                        required</small>
                                 </div>
-   
-                      </form>
+                            </div>
+                        </div>
+                    </div>
 
-                 </div>
+                    <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100">
+                        <button type="submit" class="btn btn-success btn-lg btn-block"
+                            [disabled]="itemForm.status=='INVALID'">Submit Application</button>
+                    </div>
+
+                </form>
+
+            </div>
+            <div *ngIf="show =='task'" class="row taskDiv">
+                <h3 class="text-center">ADD NEW Order</h3>
+                <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="">
+                    <div class="row ">
+                        <div class="col-md-3 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Customer Name
+                                    :</label>
+                                <select formControlName="CustomerName" id="floatingCustomerName"
+                                    class="form-control text-center me-5  ">
+                                    <option class="" value="test">test</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3  ">
+                            <div class="form-floating mb-2 form-group ">
+                                <label for="floatingCustomerCode" class="w-25 btn-dark text-center py-2 ">Customer Code
+                                    :</label>
+                                <select formControlName="CustomerCode" id="floatingCustomerCode"
+                                    class="form-control text-center me-5  ">
+                                    <option class="" value="test">test</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderReference"
+                                    placeholder="Order Reference" formControlName="OrderReference">
+                                <label for="floatingOrderReference">Order Reference</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderStatus"
+                                    placeholder="Order Status" formControlName="OrderStatus">
+                                <label for="floatingOrderStatus">Order Status</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-md-3 ">
+                            <div *ngIf="taskForm.get('CustomerName')?.invalid && taskForm.get('CustomerName')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('CustomerName')?.errors?.['required']"> Customer Name is
+                                    required</small>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div *ngIf="taskForm.get('CustomerCode')?.invalid && taskForm.get('CustomerCode')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('CustomerCode')?.errors?.['required']"> Customer Code is
+                                    required</small>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div *ngIf="taskForm.get('OrderReference')?.invalid && taskForm.get('OrderReference')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderReference')?.errors?.['required']"> Order Reference is
+                                    required</small>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div *ngIf="taskForm.get('OrderStatus')?.invalid && taskForm.get('OrderStatus')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderStatus')?.errors?.['required']"> Order Status is
+                                    required</small>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderNumber"
+                                    placeholder="Order Number" formControlName="OrderNumber">
+                                <label for="floatingOrderNumber">Order Number</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3  ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderTypeCode"
+                                    placeholder="Order Type Code" formControlName="OrderTypeCode">
+                                <label for="floatingOrderTypeCode">Order Type Code</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderTypeName"
+                                    placeholder="Order Type Name" formControlName="OrderTypeName">
+                                <label for="floatingOrderTypeName">Order Type Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3  ">
+                            <div class="form-floating mb-2 form-group ">
+                                <label for="floatingPriorty" class="w-25 btn-dark text-center py-2 px-3"> Order priority
+                                    :</label>
+                                <select formControlName="OrderPriority" id="floatingPriorty"
+                                    class="form-control text-center me-5  ">
+                                    <option class=" btn-success " value="High">High</option>
+                                    <option class="btn-dark " value="Low">Low</option>
+                                    <option class=" btn-primary " value="Medium">Medium</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-md-3 ">
+                            <div *ngIf="taskForm.get('OrderNumber')?.invalid && taskForm.get('OrderNumber')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderNumber')?.errors?.['required']"> Order Number is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div *ngIf="taskForm.get('OrderTypeCode')?.invalid && taskForm.get('OrderTypeCode')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderTypeCode')?.errors?.['required']"> Order Type Code is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div *ngIf="taskForm.get('OrderTypeName')?.invalid && taskForm.get('OrderTypeName')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderTypeName')?.errors?.['required']"> Order Type Name is
+                                    required</small>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3 ">
+                            <div *ngIf="taskForm.get('OrderPriority')?.invalid && taskForm.get('OrderPriority')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderPriority')?.errors?.['required']"> Order Priority is
+                                    required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-2 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderTotalAmount"
+                                    placeholder="Order Total Amount" formControlName="OrderTotalAmount">
+                                <label for="floatingOrderTotalAmount">Order Total Amount</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderSheets"
+                                    placeholder="Order Sheets" formControlName="OrderSheets">
+                                <label for="floatingOrderSheets">Order Sheets</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingPiecesPreSheets"
+                                    placeholder="Pieces Pre Sheets" formControlName="PiecesPreSheets">
+                                <label for="floatingPiecesPreSheets">Pieces Pre Sheets</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingPiecePrice"
+                                    placeholder="Piece Price" formControlName="PiecePrice">
+                                <label for="floatingPiecePrice">Piece Price</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingTotalPrice"
+                                    placeholder="Total Price" formControlName="TotalPrice">
+                                <label for="floatingTotalPrice">Total Price</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingSheetPrice"
+                                    placeholder="Sheet Price" formControlName="SheetPrice">
+                                <label for="floatingSheetPrice">Sheet Price</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-md-2 ">
+                            <div *ngIf="taskForm.get('OrderTotalAmount')?.invalid && taskForm.get('OrderTotalAmount')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderTotalAmount')?.errors?.['required']"> Order Total Amount is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div *ngIf="taskForm.get('OrderSheets')?.invalid && taskForm.get('OrderSheets')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderSheets')?.errors?.['required']"> Order Sheets is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div *ngIf="taskForm.get('PiecesPreSheets')?.invalid && taskForm.get('PiecesPreSheets')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('PiecesPreSheets')?.errors?.['required']"> Pieces Pre Sheets is
+                                    required</small>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2 ">
+                            <div *ngIf="taskForm.get('PiecePrice')?.invalid && taskForm.get('PiecePrice')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('PiecePrice')?.errors?.['required']"> Piece Price is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div *ngIf="taskForm.get('TotalPrice')?.invalid && taskForm.get('TotalPrice')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('TotalPrice')?.errors?.['required']"> Total Price is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2 ">
+                            <div *ngIf="taskForm.get('SheetPrice')?.invalid && taskForm.get('SheetPrice')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('SheetPrice')?.errors?.['required']"> Sheet Price is
+                                    required</small>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <p class="text-center bg-dark text-white">Side Steps Availability</p>
+                    <div class="row ">
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingCNC" placeholder="CNC"
+                                    formControlName="CNC">
+                                <label for="floatingCNC">CNC</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingCTB" placeholder="CTB"
+                                    formControlName="CTB">
+                                <label for="floatingCTB">CTB</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingStamp" placeholder="Stamp"
+                                    formControlName="Stamp">
+                                <label for="floatingStamp">Stamp</label>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('CNC')?.invalid && taskForm.get('CNC')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('CNC')?.errors?.['required']"> CNC is
+                                    required</small>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('CTB')?.invalid && taskForm.get('CTB')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('CTB')?.errors?.['required']">CTB is
+                                    required</small>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('Stamp')?.invalid && taskForm.get('Stamp')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('Stamp')?.errors?.['required']"> Stamp is
+                                    required</small>
+
+                            </div>
+                        </div>
+                  
+                    </div>
+                    <p class="text-center bg-dark text-white">Default Steps</p>
+                    <div class="row ">
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingStepCode" placeholder="Step Code"
+                                    formControlName="StepCode">
+                                <label for="floatingStepCode">Step Code</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingStepName" placeholder="Step Name"
+                                    formControlName="StepName">
+                                <label for="floatingStepName">Step Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingStepFactor"
+                                    placeholder="Step Factor" formControlName="StepFactor">
+                                <label for="floatingStepFactor">Step Factor</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('StepCode')?.invalid && taskForm.get('StepCode')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('StepCode')?.errors?.['required']"> StepCode is
+                                    required</small>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('StepName')?.invalid && taskForm.get('StepName')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('StepName')?.errors?.['required']">StepName is
+                                    required</small>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('StepFactor')?.invalid && taskForm.get('StepFactor')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('StepFactor')?.errors?.['required']"> StepFactor is
+                                    required</small>
+
+                            </div>
+                        </div>
+                  
+                    </div>
+                    <div class="col-md-8 form-group d-flex  w-100">
+                        <button type="submit" class="btn btn-dark text-white w-100"
+                            [disabled]="taskForm.status=='INVALID'">Add Task</button>
+                    </div>
+                </form>
+                <div class="d-flex justify-content-between by-3">
+
+                    <div class="card w-100 px-5">
+
+                        <table class="table px-5 text-center mt-5 ">
+                            <thead class="">
+                                <tr>
+                                    <th >Customer Name</th>
+                                    <th >Customer Code</th>
+                                    <th >Order Reference</th>
+                                    <th >Order Status</th>
+                                    <th>Order Number</th>
+                                    <th >Order Type Code</th>
+                                    <th>Order Type Name</th>
+                                    <th >Order priority</th>
+                                    <th >Order Total Amount</th>
+                                    <th >Order Sheets</th>
+                                    <th >Pieces Pre Sheets</th>
+                                    <th >Piece Price</th>
+                                    <th >Total Price</th>
+                                    <th >Sheet Price</th>
+                                    <th >Step Code</th>
+                                    <th>Step Name</th>
+                                    <th >Step Factor</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="">
+                                <tr class='tr'>
+
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+                                    <td><input class="in form-control" value="Customer"></td>
+
+
+                                </tr>
+                            </tbody>
+                            <div class=" d-flex justify-content-center">
+
+                                <button (click)="subm()" class="btn sub btn-dark d-none w-100 ">Submit</button>
+                            </div>
+                        </table>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div *ngIf="show =='customer'" class="row d-flex justify-content-center  customerDiv">
+                <h3 class="text-center">ADD NEW CUSTOMER</h3>
+                <form [formGroup]="customerForm" (ngSubmit)="addCustomer()" class="">
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            <div class="form-floating mb-3 form-group w-50">
+                                <input type="text" class="form-control" id="floatingInput" placeholder="Customer Name"
+                                    formControlName="customerName">
+                                <label for="floatingInput">Customer Name</label>
+                                <div
+                                    *ngIf="customerForm.get('customerName')?.invalid && customerForm.get('customerName')?.touched">
+                                    <small class="btn btn-danger px-5 form-control"
+                                        *ngIf="customerForm.get('customerName')?.errors?.['required']">Customer Name is
+                                        required</small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100">
+                        <button type="submit" class="btn btn-success btn-lg btn-block"
+                            [disabled]="customerForm.status=='INVALID'">Submit Application</button>
+                    </div>
+
+                </form>
+
+            </div>
         </div>
 
     </div>
