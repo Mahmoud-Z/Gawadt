@@ -61,49 +61,48 @@
 
 <section>
     <div class="row">
-    <div class="col-md-2 left-side-bar">
-        <div>
-            <h4> Title : {{taskDetails.name}}</h4>
-            <p>Description : {{taskDetails.description}}</p>
-            <p>Duration : {{taskDetails.duration}}</p>
-        </div>
-    </div>
-    <div class="col-md-8">
-    <div class="mt-5">
-        <div class=" col-md-12 d-flex justify-content-center mb-3"><button class="btn btn-primary "  data-bs-toggle="modal" data-bs-target="#Permission" > Request Permission <i class="fa-solid fa-right-left"></i></button></div>
-                <div class="row justify-content-center">
-                    <div class="col-md-4 px-21 mt-2" *ngFor="let i of machines">
-                        <div class="card " style="width: 100%;">
-                            <div class="card-header justify-content-center">
-                                <div class="row ">
-                                    <div class="col-md-6 ">{{i.id}}</div> 
-                                    <div class=" col-md-6 d-flex justify-content-end">
-                                        <div class="form-check form-switch mx-auto">
-                                            <input class="form-check-input" type="checkbox"
-                                                (change)="startStop($event,tasks[i.id][0].id)" role="switch"
-                                                id="flexSwitchCheckChecked" [checked]="i.status=='true'" />
-                                                <p>{{i.status}}</p>
-                                        </div>
-                                        <button type="button" class="btn btn-danger deltBtn mx-1" (click)="deleteMachine(i.id)">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <ul style="height: 250px;border:solid 1px #000;overflow-y: scroll;" class="list-group list-group-flush scrollbar" id="{{i.id}}" cdkDropList [cdkDropListConnectedTo]="machineIds" (cdkDropListDropped)="onDrop($event,i.status)" [cdkDropListData]="tasks[i.id]" >
-                                <li class="list-group-item" cdkDrag class="drag-item" [cdkDragDisabled]="i.status=='false'" *ngFor="let j of tasks[i.id]" (click)="viewTask(j.id)">
-                                    <div class="row">
-                                    <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
-                                    <p *ngIf="i.status=='true'">{{counters[j.id]}}</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-            
-                </div>
-        </div>
-    </div>
-    <div class="col-md-2 right-side-bar">
-        
-    </div>
-</div>
+      <div class="col-md-2 left-side-bar">
+          <div>
+              <h4> Title : {{taskDetails.name}}</h4>
+              <p>Description : {{taskDetails.description}}</p>
+              <p>Duration : {{taskDetails.duration}}</p>
+          </div>
+      </div>
+      <div class="col-md-8">
+      <div class="mt-5">
+          <div class=" col-md-12 d-flex justify-content-center mb-3"><button class="btn btn-primary "  data-bs-toggle="modal" data-bs-target="#Permission" > Request Permission <i class="fa-solid fa-right-left"></i></button></div>
+                  <div class="row justify-content-center">
+                      <div class="col-md-4 px-21 mt-2" *ngFor="let i of machines">
+                          <div class="card " style="width: 100%;">
+                              <div class="card-header justify-content-center">
+                                  <div class="row ">
+                                      <div class="col-md-6 ">{{i.id}}</div> 
+                                      <div class=" col-md-6 d-flex justify-content-end">
+                                          <div class="form-check form-switch mx-auto" *ngIf="userPrivlage[0].machineCheckBox=='true'">
+                                              <input class="form-check-input" type="checkbox"
+                                                  (change)="startStop($event,tasks[i.id][0].id)" role="switch"
+                                                  id="flexSwitchCheckChecked" [checked]="i.status=='true'" />
+                                          </div>
+                                          <button type="button" class="btn btn-danger deltBtn mx-1" (click)="deleteMachine(i.id)" *ngIf="userPrivlage[0].machineCheckBox=='true'">Delete</button>
+                                      </div>
+                                  </div>
+                              </div>
+                              <ul style="height: 250px;border:solid 1px #000;overflow-y: scroll;" class="list-group list-group-flush scrollbar" id="{{i.id}}" cdkDropList [cdkDropListConnectedTo]="machineIds" (cdkDropListDropped)="onDrop($event,i.status)" [cdkDropListData]="tasks[i.id]" >
+                                  <li class="list-group-item" cdkDrag class="drag-item" [cdkDragDisabled]="i.status=='false'||userPrivlage[0].taskCheckBox=='false'" *ngFor="let j of tasks[i.id]" (click)="viewTask(j.id)">
+                                      <div class="row">
+                                      <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
+                                      <p *ngIf="i.status=='true'">{{counters[j.id]}}</p>
+                                      </div>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+              
+                  </div>
+          </div>
+      </div>
+      <div class="col-md-2 right-side-bar">
+          
+      </div>
+  </div>
 </section>

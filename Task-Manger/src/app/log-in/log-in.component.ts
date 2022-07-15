@@ -14,7 +14,6 @@ export class LogInComponent implements OnInit {
   form = new FormGroup({
     email: new FormControl('', Validators.compose([Validators.required])),
     password:new FormControl("",Validators.compose([Validators.required])),
-  
   })
   
   constructor(public Service:ApiService ,private _Router:Router) { }

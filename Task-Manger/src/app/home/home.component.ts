@@ -5,6 +5,7 @@ import { interval } from 'rxjs';
 import { end } from '@popperjs/core';
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import jwt from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class HomeComponent implements OnInit {
   taskPermission:boolean=false;
   remainingTime: any;
   taskDetails: any;
+  userPrivlage: any;
   permissionForm = new FormGroup({
     permissionItemId: new FormControl('',Validators.compose([Validators.required])),
     reason: new FormControl('',Validators.compose([Validators.required])),
@@ -34,6 +36,10 @@ export class HomeComponent implements OnInit {
     type: new FormControl('')
   })
   constructor(public Service:ApiService) {
+    var token=localStorage.getItem("token");
+    this.userPrivlage=jwt(token||"");
+    this.userPrivlage=this.userPrivlage.user
+    console.log(this.userPrivlage);
     this.getMachines()
     this.getTasks()
     this.getTasksRight()
