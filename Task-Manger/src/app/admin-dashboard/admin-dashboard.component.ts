@@ -61,6 +61,7 @@ export class AdminDashboardComponent implements OnInit {
   userFormValue:any;
   machineFormValue:any;
   show:any;
+  customers:any;
   successMsg: boolean = false;
   machineSuccessMsg: boolean = false;
   FailMsg: boolean = false;
@@ -80,6 +81,7 @@ export class AdminDashboardComponent implements OnInit {
 
 
   constructor(public Service:ApiService) { 
+    this.getCustomers();
     this.show='users'
   }
 
@@ -138,13 +140,16 @@ export class AdminDashboardComponent implements OnInit {
     })
   }
   addItem(){
-    this.Service.postFun('importItem',this.itemForm.value).subscribe(data => {
-      this.ItemSuccessMsg=true;
-    })
+    console.log(this.taskForm.value);
+    // this.Service.postFun('importItem',this.taskForm.value).subscribe(data => {
+    //   this.ItemSuccessMsg=true;
+    // })
   }
 
   addTask(){
-    console.log(this.taskForm.value);
+    this.Service.postFun('importTasks',this.itemForm.value).subscribe(data => {
+      this.ItemSuccessMsg=true;
+    })
   }
   addCustomer(){
     this.Service.postFun('importCustomer',this.customerForm.value).subscribe(data => {
@@ -154,6 +159,12 @@ export class AdminDashboardComponent implements OnInit {
   }
   subm(){
 
+  }
+  getCustomers(){
+    this.Service.getFun('getCustomers').subscribe(data => {
+      this.customers=data;
+      console.log(this.customers);
+    })
   }
 
 }

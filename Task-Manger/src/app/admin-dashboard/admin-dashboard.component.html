@@ -179,9 +179,8 @@
                             <div class="form-floating mb-2 form-group ">
                                 <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Customer Name
                                     :</label>
-                                <select formControlName="CustomerName" id="floatingCustomerName"
-                                    class="form-control text-center me-5  ">
-                                    <option class="" value="test">test</option>
+                                <select formControlName="CustomerName" id="floatingCustomerName" class="form-control text-center me-5  ">
+                                    <option class="" value="test" *ngFor="let i of customers">{{i.customerName  }}</option>
                                 </select>
                             </div>
                         </div>
@@ -314,13 +313,6 @@
                     <div class="row ">
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingOrderTotalAmount"
-                                    placeholder="Order Total Amount" formControlName="OrderTotalAmount">
-                                <label for="floatingOrderTotalAmount">Order Total Amount</label>
-                            </div>
-                        </div>
-                        <div class="col-md-2 ">
-                            <div class="form-floating mb-2 form-group ">
                                 <input type="text" class="form-control" id="floatingOrderSheets"
                                     placeholder="Order Sheets" formControlName="OrderSheets">
                                 <label for="floatingOrderSheets">Order Sheets</label>
@@ -335,16 +327,16 @@
                         </div>
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingPiecePrice"
-                                    placeholder="Piece Price" formControlName="PiecePrice">
-                                <label for="floatingPiecePrice">Piece Price</label>
+                                <input type="text" class="form-control" id="floatingTotalPrice"
+                                    placeholder="Total Price" formControlName="TotalPrice">
+                                <label for="floatingTotalPrice">Total Pieces</label>
                             </div>
                         </div>
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingTotalPrice"
-                                    placeholder="Total Price" formControlName="TotalPrice">
-                                <label for="floatingTotalPrice">Total Price</label>
+                                <input type="text" class="form-control" id="floatingPiecePrice"
+                                    placeholder="Piece Price" formControlName="PiecePrice">
+                                <label for="floatingPiecePrice">Piece Price</label>
                             </div>
                         </div>
                         <div class="col-md-2 ">
@@ -354,15 +346,15 @@
                                 <label for="floatingSheetPrice">Sheet Price</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="row py-2">
                         <div class="col-md-2 ">
-                            <div *ngIf="taskForm.get('OrderTotalAmount')?.invalid && taskForm.get('OrderTotalAmount')?.touched">
-                                <small class="btn btn-danger px-5 form-control "
-                                    *ngIf="taskForm.get('OrderTotalAmount')?.errors?.['required']"> Order Total Amount is
-                                    required</small>
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderTotalAmount"
+                                    placeholder="Order Total Amount" formControlName="OrderTotalAmount">
+                                <label for="floatingOrderTotalAmount">Order Total Amount</label>
                             </div>
                         </div>
+                    </div>
+                    <div class="row py-2">
                         <div class="col-md-2 ">
                             <div *ngIf="taskForm.get('OrderSheets')?.invalid && taskForm.get('OrderSheets')?.touched">
                                 <small class="btn btn-danger px-5 form-control "
@@ -377,18 +369,17 @@
                                     required</small>
                             </div>
                         </div>
-                        
                         <div class="col-md-2 ">
-                            <div *ngIf="taskForm.get('PiecePrice')?.invalid && taskForm.get('PiecePrice')?.touched">
+                            <div *ngIf="taskForm.get('TotalPrice')?.invalid && taskForm.get('TotalPrice')?.touched">
                                 <small class="btn btn-danger px-5 form-control "
-                                    *ngIf="taskForm.get('PiecePrice')?.errors?.['required']"> Piece Price is
+                                    *ngIf="taskForm.get('TotalPrice')?.errors?.['required']"> Total Pieces is
                                     required</small>
                             </div>
                         </div>
                         <div class="col-md-2 ">
-                            <div *ngIf="taskForm.get('TotalPrice')?.invalid && taskForm.get('TotalPrice')?.touched">
+                            <div *ngIf="taskForm.get('PiecePrice')?.invalid && taskForm.get('PiecePrice')?.touched">
                                 <small class="btn btn-danger px-5 form-control "
-                                    *ngIf="taskForm.get('TotalPrice')?.errors?.['required']"> Total Price is
+                                    *ngIf="taskForm.get('PiecePrice')?.errors?.['required']"> Piece Price is
                                     required</small>
                             </div>
                         </div>
@@ -399,7 +390,13 @@
                                     required</small>
                             </div>
                         </div>
-                        
+                        <div class="col-md-2 ">
+                            <div *ngIf="taskForm.get('OrderTotalAmount')?.invalid && taskForm.get('OrderTotalAmount')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('OrderTotalAmount')?.errors?.['required']"> Order Total Amount is
+                                    required</small>
+                            </div>
+                        </div>
                     </div>
                     <p class="text-center bg-dark text-white">Side Steps Availability</p>
                     <div class="row ">
