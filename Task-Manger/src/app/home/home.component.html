@@ -13,15 +13,20 @@
             <div>
             <label class="p-3">Permission Type</label>
             <select (change)="switchPermission($event)" name="PTybe" id="PTybe" formControlName="type">
-                <option value="machinePermission">Stop Machine Permission</option>
+                <option value="machinePermissionStop">Stop Machine Permission</option>
+                <option value="machinePermissionStart">Start Machine Permission</option>
                 <option value="taskPermission">Transfer Task Permission</option>
               </select>
             </div>
             <hr>
-              <div *ngIf="machinePermission" class="machinePermissionDiv">
+              <div *ngIf="machinePermissionStop" class="machinePermissionDiv">
                 <label class="p-2">Machine Name</label>
                 <select  name="reason" id="reason" formControlName="permissionItemId" >
-                    <option *ngFor="let i of machines" [value]="i.id+'/'+i.name">{{i.name}}</option>
+                  <ng-container *ngFor="let i of machines" >
+                    <option *ngIf="i.status=='true' "[value]="i.id+'/'+i.name">
+                        {{i.name}}
+                    </option>
+                  </ng-container>
                 </select>
                 <label class="p-2">Reason</label>
                 <select  name="reason" id="reason" formControlName="reason" >
@@ -32,6 +37,22 @@
                   <label class="p-3">Duration</label>
                   <input type="number" placeholder="Permission Duration" formControlName="duration">
              </div>
+             <div *ngIf="machinePermissionStart" class="machinePermissionDiv">
+              <label class="p-2">Machine Name</label>
+              <select  name="reason" id="reason" formControlName="permissionItemId" >
+              <ng-container *ngFor="let i of machines" >
+                <option *ngIf="i.status=='false' "[value]="i.id+'/'+i.name">
+                    {{i.name}}
+                </option>
+              </ng-container>
+              </select>
+              <label class="p-2">Reason</label>
+              <select  name="reason" id="reason" formControlName="reason" >
+                  <option value="BreakEnd">Break Ends</option>
+                  <option value="MaintenanceEnd">Maintenance end</option>
+                  <option value="shift start">Shift Start</option>
+                </select>
+           </div>
               <div  *ngIf="taskPermission" class="taskPermissionDiv">
                 <label class="p-2">Task Name</label>
                 <select  name="reason" id="reason" formControlName="permissionItemId" >
@@ -69,6 +90,9 @@
       </div>
       <div class="col-md-8">
       <div class="mt-5">
+        <div class="text-center">
+        <p class="text-danger">Your request to Stop Machine cutting at 7 o'clock have been accepted</p>
+      </div>
           <div class=" col-md-12 d-flex justify-content-center mb-3"><button class="btn btn-primary "  data-bs-toggle="modal" data-bs-target="#Permission" > Request Permission <i class="fa-solid fa-right-left"></i></button></div>
                   <div class="row justify-content-center">
                       <div class="col-md-4 px-21 mt-2" *ngFor="let i of machines">

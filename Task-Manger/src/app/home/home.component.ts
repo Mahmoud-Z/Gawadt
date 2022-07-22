@@ -18,12 +18,15 @@ import jwt from 'jwt-decode';
 export class HomeComponent implements OnInit {
   machines:any;
   tasks:any;
+  stoppedMachines:any;
   theArray:any;
   task:any;
   tasksRight:any;
   counters:any;
   machineIds:any;
-  machinePermission:boolean=false;
+  machinePermissionStop:boolean=false;
+  machinePermissionStart:boolean=false;
+  username:any;
   taskPermission:boolean=false;
   remainingTime: any;
   taskDetails: any;
@@ -33,13 +36,15 @@ export class HomeComponent implements OnInit {
     reason: new FormControl('',Validators.compose([Validators.required])),
     startTime: new FormControl(''),
     duration: new FormControl('',Validators.compose([Validators.required])),
-    type: new FormControl('')
+    type: new FormControl(''),
+    username: new FormControl('')
   })
+
   constructor(public Service:ApiService) {
     var token=localStorage.getItem("token");
     this.userPrivlage=jwt(token||"");
     this.userPrivlage=this.userPrivlage.user
-    console.log(this.userPrivlage);
+    this.username=this.userPrivlage[0].userName    
     this.getMachines()
     this.getTasks()
     this.getTasksRight()
@@ -52,6 +57,8 @@ export class HomeComponent implements OnInit {
       }
     }) 
   }
+
+  
   ngOnInit(): void {
   }
   timeCounter(endDate:any){
@@ -67,13 +74,11 @@ export class HomeComponent implements OnInit {
   }
   deleteMachine(element:any){
     this.Service.postFun('deleteMachine',{id:element}).subscribe(data => {
-      console.log(data);
       this.getMachines()
     })
   }
   deleteTask(element:any){
     this.Service.postFun('deleteTask',{id:element}).subscribe(data => {
-      console.log(data);
       this.getTasks()
     })
   }
@@ -84,14 +89,15 @@ export class HomeComponent implements OnInit {
       for (let i = 0; i < this.machines.length; i++) {
         this.machineIds.push(this.machines[i].id.toString())
       }
-      console.log(this.machineIds);
+
+      
+      
     })
+
   }
   getTasks(){
     this.Service.getFun('getTasks').subscribe(data => {
       this.tasks=data;
-      console.log(data);
-      
     })
   }
   getTasksRight(){
@@ -101,7 +107,6 @@ export class HomeComponent implements OnInit {
   }
   updateTask(machineId:any,taskId:any,machineIdBefore:any,taskIDsBefore:any) {
     this.Service.postFun('updateTask',{machineId,taskId,machineIdBefore,taskIDsBefore}).subscribe(data => {
-      console.log(data);
       // this.getTasks()
     })
   }
@@ -116,7 +121,6 @@ export class HomeComponent implements OnInit {
     })
   }
   startStop(event:any,id:any){
-    console.log(event.target.checked,id);
     if (event.target.checked==true) {
       this.Service.postFun('start',{id}).subscribe(data => {
         this.getMachines()
@@ -131,24 +135,31 @@ export class HomeComponent implements OnInit {
   viewTask(id:any){
     this.Service.postFun('viewTask',{id}).subscribe(data => {
       this.taskDetails=data;
-      console.log(this.taskDetails);
     })
   }
   switchPermission(event:any){
-    console.log();
     if ((<HTMLInputElement>event.target).value =='taskPermission')
     {
-      this.machinePermission=false;
       this.taskPermission=true;
+      this.machinePermissionStart=false;
+      this.machinePermissionStop=false;
 
     }
-    else if ((<HTMLInputElement>event.target).value =='machinePermission'){
+    else if ((<HTMLInputElement>event.target).value =='machinePermissionStop'){
+      this.machinePermissionStop=true;
+      this.machinePermissionStart=false;
       this.taskPermission=false;
-      this.machinePermission=true;
-
+    }
+    else if ((<HTMLInputElement>event.target).value =='machinePermissionStart'){
+      this.machinePermissionStop=false;
+      this.machinePermissionStart=true;
+      this.taskPermission=false;
     }
   }
   Permssion(){
+    this.permissionForm.value['username']=this.username;
+    console.log(this.permissionForm);
+    
     this.Service.postFun('addPermission',this.permissionForm.value).subscribe(data => {
 
     })
