@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
   taskPermission:boolean=false;
   remainingTime: any;
   taskDetails: any;
+  permissionResponse: any;
   userPrivlage: any;
   permissionForm = new FormGroup({
     permissionItemId: new FormControl('',Validators.compose([Validators.required])),
@@ -49,6 +50,7 @@ export class HomeComponent implements OnInit {
     this.getTasks()
     this.getTasksRight()
     this.viewTask(0)
+    this.getPermissionResponse();
     interval(1000).subscribe((ev)=>{
       this.counters={}
       for (let i = 0; i < Object.keys(this.tasks).length; i++) {
@@ -57,8 +59,6 @@ export class HomeComponent implements OnInit {
       }
     }) 
   }
-
-  
   ngOnInit(): void {
   }
   timeCounter(endDate:any){
@@ -87,14 +87,11 @@ export class HomeComponent implements OnInit {
     this.Service.getFun('getMachine').subscribe(data => {
       this.machines=data;
       for (let i = 0; i < this.machines.length; i++) {
-        this.machineIds.push(this.machines[i].id.toString())
-      }
-
-      
-      
+      this.machineIds.push(this.machines[i].id.toString())
+      }  
     })
-
   }
+
   getTasks(){
     this.Service.getFun('getTasks').subscribe(data => {
       this.tasks=data;
@@ -164,6 +161,12 @@ export class HomeComponent implements OnInit {
 
     })
   }
+  getPermissionResponse(){
+    this.Service.postFun('getPermissionResponse',{username:this.username}).subscribe(data => {
+      this.permissionResponse=data;
+    })
+  }
+
   onDrop(event:CdkDragDrop<string []>,status:any){
     if (status=='true') {
       if (event.previousContainer === event.container) {
@@ -189,12 +192,13 @@ export class HomeComponent implements OnInit {
       for (let i = 0; i < event.previousContainer.data.length; i++) {
         taskIDsBefore.push(JSON.parse(JSON.stringify(event.previousContainer.data[i])).id)
       }
-      this.updateTask(event.container.id,taskIDs,event.previousContainer.id,taskIDsBefore)
-      console.log(
+      this.timeCalculation(
         event.previousContainer.id,
         event.container.id,
         event.previousIndex,
-        event.currentIndex);
+        event.currentIndex)
+      this.updateTask(event.container.id,taskIDs,event.previousContainer.id,taskIDsBefore)
+
       // let oldTask;
       // if (JSON.stringify(event.previousContainer.data[event.previousIndex])==undefined) {
       //   oldTask=JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id;
@@ -202,11 +206,6 @@ export class HomeComponent implements OnInit {
       //   oldTask=JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])).id
       // }
       // this.timeCalculation(JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id,oldTask)
-      this.timeCalculation(
-        event.previousContainer.id,
-        event.container.id,
-        event.previousIndex,
-        event.currentIndex)
     }
   }
 }

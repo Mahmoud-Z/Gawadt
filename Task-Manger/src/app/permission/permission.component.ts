@@ -18,7 +18,8 @@ export class PermissionComponent implements OnInit {
   permissionResponseForm = new FormGroup({
     responseMessage: new FormControl(''),
     username: new FormControl(''),
-
+    responseType: new FormControl(''),
+    responseStatues: new FormControl('')
   })
 
   constructor(public Service:ApiService,public home:HomeComponent) {
@@ -32,10 +33,13 @@ export class PermissionComponent implements OnInit {
 
   Accept(id:any,type:any,permissionId:any,permissionUsername:any){
     this.permissionResponseForm.value['username']=permissionUsername;
+    this.permissionResponseForm.value['responseStatues']='true';
+
     if (type=='Stop the machine') {
       this.Service.postFun('stopMachine',{id}).subscribe(data => {
       })
       this.permissionResponseForm.value['responseMessage']='Your Request For Stopping The Machine have been Accepted';
+      this.permissionResponseForm.value['responseType']='Aceepted';
       this.Service.postFun('permissionResponse',this.permissionResponseForm.value).subscribe(data => {
       }) 
     }
@@ -43,13 +47,16 @@ export class PermissionComponent implements OnInit {
       this.Service.postFun('startMachine',{id}).subscribe(data => {
       })
       this.permissionResponseForm.value['responseMessage']='Your Request For Starting The Machine have been Accepted';
+      this.permissionResponseForm.value['responseType']='Aceepted';
       this.Service.postFun('permissionResponse',this.permissionResponseForm.value).subscribe(data => {
       }) 
     }
     else if (type=='Transfer the task') {
       this.permissionResponseForm.value['responseMessage']='Your Request For Transfering The Task have been Accepted';
+      this.permissionResponseForm.value['responseType']='Aceepted';
       this.Service.postFun('permissionResponse',this.permissionResponseForm.value).subscribe(data => {
       }) 
+      
     }
     this.Service.postFun('submittedColumn',{permissionId}).subscribe(data => {
       console.log(data);
@@ -57,15 +64,24 @@ export class PermissionComponent implements OnInit {
       this.home.getMachines();
       this.home.getTasks();
     })
+    setTimeout(()=>{this.permissionTimeOut()}, 1200000);
   }
   Decline(id:any,type:any,permissionId:any,permissionUsername:any){
+    this.permissionResponseForm.value['username']=permissionUsername;
     this.permissionResponseForm.value['responseMessage']='Your Request For Stopping The Machine have been Denied';
+    this.permissionResponseForm.value['responseType']='Decline';
+    this.permissionResponseForm.value['responseStatues']='true';
     this.Service.postFun('permissionResponse',this.permissionResponseForm.value).subscribe(data => {
     }) 
     this.Service.postFun('submittedColumn',{permissionId}).subscribe(data => {
       this.getPermssion();
       this.home.getMachines();
       this.home.getTasks();
+    })
+    setTimeout(()=>{this.permissionTimeOut()}, 1200000);
+  }
+  permissionTimeOut(){
+    this.Service.postFun('permissionTimeOut','').subscribe(data => {
     })
   }
   getPermssion(){
@@ -86,4 +102,7 @@ export class PermissionComponent implements OnInit {
     }
     })
   }
+
+
+
 }
