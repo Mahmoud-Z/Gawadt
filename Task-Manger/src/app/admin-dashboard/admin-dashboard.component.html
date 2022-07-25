@@ -311,45 +311,90 @@
                         </div>
                     </div>
                     <div class="row ">
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-4 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderTotalAmount"
+                                    placeholder="Paper Type" formControlName="PaperType">
+                                <label for="floatingOrderTotalAmount">Paper Type</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-4 form-group ">
+                                <input type="text" class="form-control" id="floatingOrderTotalAmount"
+                                    placeholder="Leather Type" formControlName="LeatherType">
+                                <label for="floatingOrderTotalAmount">Leather Type</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-4 form-group ">
+                                <input type="file" class="form-control" id="floatingOrderTotalAmount"
+                                    placeholder="Photo" formControlName="imgSrc">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('PaperType')?.invalid && taskForm.get('PaperType')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('PaperType')?.errors?.['required']"> Paper Type is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('LeatherType')?.invalid && taskForm.get('LeatherType')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('LeatherType')?.errors?.['required']"> Leather Type is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div *ngIf="taskForm.get('imgSrc')?.invalid && taskForm.get('imgSrc')?.touched">
+                                <small class="btn btn-danger px-5 form-control "
+                                    *ngIf="taskForm.get('imgSrc')?.errors?.['required']"> Phopto is
+                                    required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingOrderSheets"
-                                    placeholder="Order Sheets" formControlName="OrderSheets">
+                                <input type="number" class="form-control" id="floatingOrderSheets"
+                                    placeholder="Order Sheets" [attr.disabled]='true' (ngModelChange)="orderTotalAmountCalculator()" [(ngModel)]="orderSheets" formControlName="OrderSheets">
                                 <label for="floatingOrderSheets">Order Sheets</label>
                             </div>
                         </div>
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingPiecesPreSheets"
-                                    placeholder="Pieces Pre Sheets" formControlName="PiecesPreSheets">
+                                <input type="number" class="form-control" id="floatingPiecesPreSheets"
+                                    placeholder="Pieces Pre Sheets" (ngModelChange)="sheetsOrderCounter();sheetsPriceCalculator()" formControlName="PiecesPreSheets">
                                 <label for="floatingPiecesPreSheets">Pieces Pre Sheets</label>
                             </div>
                         </div>
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingTotalPrice"
-                                    placeholder="Total Price" formControlName="TotalPrice">
+                                <input type="number" class="form-control" (ngModelChange)="sheetsOrderCounter()" id="floatingTotalPrice"
+                                    placeholder="Total Price" formControlName="TotalPieces">
                                 <label for="floatingTotalPrice">Total Pieces</label>
                             </div>
                         </div>
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingPiecePrice"
-                                    placeholder="Piece Price" formControlName="PiecePrice">
+                                <input type="number" class="form-control" id="floatingPiecePrice"
+                                    placeholder="Piece Price" (ngModelChange)="sheetsPriceCalculator()" formControlName="PiecePrice">
                                 <label for="floatingPiecePrice">Piece Price</label>
                             </div>
                         </div>
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingSheetPrice"
-                                    placeholder="Sheet Price" formControlName="SheetPrice">
+                                <input type="number" class="form-control" id="floatingSheetPrice"
+                                    placeholder="Sheet Price" [(ngModel)]="sheetsPrice" [attr.disabled]='true' (ngModelChange)="orderTotalAmountCalculator()" formControlName="SheetPrice">
                                 <label for="floatingSheetPrice">Sheet Price</label>
                             </div>
                         </div>
                         <div class="col-md-2 ">
                             <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingOrderTotalAmount"
-                                    placeholder="Order Total Amount" formControlName="OrderTotalAmount">
+                                <input type="number" class="form-control" id="floatingOrderTotalAmount"
+                                    placeholder="Order Total Amount" [(ngModel)]="orderTotalAmount" formControlName="OrderTotalAmount" [attr.disabled]='true'>
                                 <label for="floatingOrderTotalAmount">Order Total Amount</label>
                             </div>
                         </div>
