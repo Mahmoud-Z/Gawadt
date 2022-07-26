@@ -40,6 +40,31 @@ export class HomeComponent implements OnInit {
     type: new FormControl(''),
     username: new FormControl('')
   })
+  orderForm = new FormGroup({
+    CustomerName: new FormControl('',),
+    CustomerCode: new FormControl('',),
+    OrderReference: new FormControl('',),
+    OrderStatus: new FormControl('',),
+    OrderNumber: new FormControl('',),
+    OrderTypeCode: new FormControl('',),
+    OrderTypeName: new FormControl('',),
+    OrderPriority: new FormControl('',),
+    OrderTotalAmount: new FormControl('',),
+    PiecesPreSheets: new FormControl('',),
+    OrderSheets: new FormControl('',),
+    PiecePrice: new FormControl('',),
+    TotalPrice: new FormControl('',),
+    SheetPrice: new FormControl('',),
+    CNC: new FormControl('',),
+    CTB: new FormControl('',),
+    Stamp: new FormControl('',),
+    StepCode: new FormControl('',),
+    StepName: new FormControl('',),
+    StepFactor: new FormControl('',),
+  })
+  customers: any;
+  anything: any;
+
 
   constructor(public Service:ApiService) {
     var token=localStorage.getItem("token");
@@ -91,7 +116,12 @@ export class HomeComponent implements OnInit {
       }  
     })
   }
-
+  getCustomers(){
+    this.Service.getFun('getCustomers').subscribe(data => {
+      this.customers=data;
+      console.log(this.customers);
+    })
+  }
   getTasks(){
     this.Service.getFun('getTasks').subscribe(data => {
       this.tasks=data;
@@ -132,7 +162,10 @@ export class HomeComponent implements OnInit {
   viewTask(id:any){
     this.Service.postFun('viewTask',{id}).subscribe(data => {
       this.taskDetails=data;
+       this.anything= this.taskDetails.id
+       console.log(this.orderForm);
     })
+    
   }
   switchPermission(event:any){
     if ((<HTMLInputElement>event.target).value =='taskPermission')
@@ -164,6 +197,11 @@ export class HomeComponent implements OnInit {
   getPermissionResponse(){
     this.Service.postFun('getPermissionResponse',{username:this.username}).subscribe(data => {
       this.permissionResponse=data;
+    })
+  }
+  editOrder(){
+
+    this.Service.postFun('editOrder',this.orderForm.value).subscribe(data => {
     })
   }
 
