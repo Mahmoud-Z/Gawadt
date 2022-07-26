@@ -39,8 +39,11 @@ export class AdminDashboardComponent implements OnInit {
     PiecesPreSheets: new FormControl('',Validators.compose([Validators.required])),
     OrderSheets: new FormControl('',Validators.compose([Validators.required])),
     PiecePrice: new FormControl('',Validators.compose([Validators.required])),
-    TotalPrice: new FormControl('',Validators.compose([Validators.required])),
+    TotalPieces: new FormControl('',Validators.compose([Validators.required])),
     SheetPrice: new FormControl('',Validators.compose([Validators.required])),
+    PaperType: new FormControl('',Validators.compose([Validators.required])),
+    LeatherType: new FormControl('',Validators.compose([Validators.required])),
+    imgSrc: new FormControl('',Validators.compose([Validators.required])),
     CNC: new FormControl('',Validators.compose([Validators.required])),
     CTB: new FormControl('',Validators.compose([Validators.required])),
     Stamp: new FormControl('',Validators.compose([Validators.required])),
@@ -57,7 +60,10 @@ export class AdminDashboardComponent implements OnInit {
   customerForm = new FormGroup({
     customerName: new FormControl('',Validators.compose([Validators.required]))
   })
-  
+  orderSheets:any;
+  sheetsPrice:any;
+  orderTotalAmount:any;
+  sheetPrice:any;
   userFormValue:any;
   machineFormValue:any;
   show:any;
@@ -67,9 +73,7 @@ export class AdminDashboardComponent implements OnInit {
   FailMsg: boolean = false;
   ItemSuccessMsg: boolean = false;
   CustomerSuccessMsg: boolean = false;
-
   user: any;
-
   permissionData: Permissions[] = [
     { id: 0, name: 'Create/Edit User' },
     { id: 1, name: 'Create/Edit Machine' },
@@ -124,9 +128,6 @@ export class AdminDashboardComponent implements OnInit {
     })
 
   }
-
-
-
   addUser() {
     this.Service.postFun('addUser',this.userForm.value).subscribe(data => {
       this.successMsg=true;
@@ -146,11 +147,42 @@ export class AdminDashboardComponent implements OnInit {
     //   this.ItemSuccessMsg=true;
     // })
   }
-
+  sheetsOrderCounter(){
+    let PiecesPreSheets='0',TotalPieces='0';
+    if (this.taskForm.get('PiecesPreSheets')?.value!=null&&this.taskForm.get('PiecesPreSheets')?.value!=undefined&&this.taskForm.get('PiecesPreSheets')?.value!="") {
+      PiecesPreSheets=this.taskForm.get('PiecesPreSheets')?.value+"";
+    }
+    if (this.taskForm.get('TotalPieces')?.value!=null&&this.taskForm.get('TotalPieces')?.value!=undefined&&this.taskForm.get('TotalPieces')?.value!="") {
+      TotalPieces=this.taskForm.get('TotalPieces')?.value+"";
+    }
+    this.orderSheets=(parseInt(TotalPieces)/parseInt(PiecesPreSheets))+"";
+  }
+  sheetsPriceCalculator(){
+    let PiecesPreSheets='0',PiecePrice='0';
+    if (this.taskForm.get('PiecesPreSheets')?.value!=null&&this.taskForm.get('PiecesPreSheets')?.value!=undefined&&this.taskForm.get('PiecesPreSheets')?.value!="") {
+      PiecesPreSheets=this.taskForm.get('PiecesPreSheets')?.value+"";
+    }
+    if (this.taskForm.get('PiecePrice')?.value!=null&&this.taskForm.get('PiecePrice')?.value!=undefined&&this.taskForm.get('PiecePrice')?.value!="") {
+      PiecePrice=this.taskForm.get('PiecePrice')?.value+"";
+    }
+    console.log(PiecesPreSheets,PiecePrice);
+    this.sheetsPrice=(parseInt(PiecesPreSheets)*parseInt(PiecePrice))+"";
+  }
+  orderTotalAmountCalculator(){
+    let SheetPrice='0',OrderSheets='0';
+    if (this.taskForm.get('SheetPrice')?.value!=null&&this.taskForm.get('SheetPrice')?.value!=undefined&&this.taskForm.get('SheetPrice')?.value!="") {
+      SheetPrice=this.taskForm.get('SheetPrice')?.value+"";
+    }
+    if (this.taskForm.get('OrderSheets')?.value!=null&&this.taskForm.get('OrderSheets')?.value!=undefined&&this.taskForm.get('OrderSheets')?.value!="") {
+      OrderSheets=this.taskForm.get('OrderSheets')?.value+"";
+    }
+    this.orderTotalAmount=(parseInt(SheetPrice)*parseFloat(OrderSheets))+"";
+  }
   addTask(){
-    this.Service.postFun('importTasks',this.itemForm.value).subscribe(data => {
-      this.ItemSuccessMsg=true;
-    })
+    console.log(this.itemForm.value);
+    // this.Service.postFun('importTasks',this.itemForm.value).subscribe(data => {
+    //   this.ItemSuccessMsg=true;
+    // })
   }
   addCustomer(){
     this.Service.postFun('importCustomer',this.customerForm.value).subscribe(data => {
@@ -167,5 +199,4 @@ export class AdminDashboardComponent implements OnInit {
       console.log(this.customers);
     })
   }
-
 }
