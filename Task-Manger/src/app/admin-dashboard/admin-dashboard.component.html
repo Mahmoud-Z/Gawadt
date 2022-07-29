@@ -520,7 +520,6 @@
                                 <label for="floatingStepFactor">Step Factor</label>
                             </div>
                         </div>
-
                     </div>
                     <div class="row py-2">
                         <div class="col-md-4 ">
@@ -547,14 +546,36 @@
 
                             </div>
                         </div>
+                        
                   
+                    </div>
+                    
+                    <p class="text-center bg-dark text-white">Default Steps</p>
+                    <div class="row">
+                        <div class="col-md-4 ">
+                            <div class="form-floating mb-2 form-group ">
+                                <input type="number" class="form-control" id="numberOfMachines"
+                                    placeholder="Number of machines" [(ngModel)]="input" (ngModelChange)="machinePath($event)" [ngModelOptions]="{standalone: true}">
+                                <label for="floatingStepFactor">Number of machines</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 " *ngFor="let i of selectedMachines;index as s">
+                            <div class="form-floating mb-2 form-group ">
+                                <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Machine {{s+1}}</label>
+                                <select (change)="test(s,$event)" id="floatingCustomerName" class="form-control text-center me-5  ">
+                                    <option class="" [value]="i.id" *ngFor="let i of machines">{{i.name  }}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-8 form-group d-flex  w-100">
                         <button type="submit" class="btn btn-dark text-white w-100"
                             [disabled]="taskForm.status=='INVALID'">Add Task</button>
                     </div>
                 </form>
-                <div class="d-flex justify-content-between by-3">
+                <!-- <div class="d-flex justify-content-between by-3">
 
                     <div class="card w-100 px-5">
 
@@ -613,7 +634,7 @@
                     </div>
 
 
-                </div>
+                </div> -->
 
             </div>
             <div *ngIf="show =='customer'" class="row d-flex justify-content-center  customerDiv">

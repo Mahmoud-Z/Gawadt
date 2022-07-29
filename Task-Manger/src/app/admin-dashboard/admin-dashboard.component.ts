@@ -50,6 +50,7 @@ export class AdminDashboardComponent implements OnInit {
     StepCode: new FormControl('',Validators.compose([Validators.required])),
     StepName: new FormControl('',Validators.compose([Validators.required])),
     StepFactor: new FormControl('',Validators.compose([Validators.required])),
+    MachinePath: new FormControl('',Validators.compose([Validators.required])),
   })
   itemForm = new FormGroup({
     itemName: new FormControl('',Validators.compose([Validators.required])),
@@ -74,6 +75,9 @@ export class AdminDashboardComponent implements OnInit {
   ItemSuccessMsg: boolean = false;
   CustomerSuccessMsg: boolean = false;
   user: any;
+  selectedMachines:any;
+  machines:any;
+  input:any;
   permissionData: Permissions[] = [
     { id: 0, name: 'Create/Edit User' },
     { id: 1, name: 'Create/Edit Machine' },
@@ -85,7 +89,9 @@ export class AdminDashboardComponent implements OnInit {
 
 
   constructor(public Service:ApiService) { 
+    this.getMachines();
     this.getCustomers();
+    this.selectedMachines=[""]
     this.show='users'
   }
 
@@ -198,5 +204,20 @@ export class AdminDashboardComponent implements OnInit {
       this.customers=data;
       console.log(this.customers);
     })
+  }
+  getMachines(){
+    this.Service.getFun('getMachine').subscribe(data => {
+      this.machines=data;
+    })
+  }
+  machinePath(event:any){
+    console.log("asgjasngkjn");
+    
+    this.selectedMachines=new Array(event);
+    console.log(event);
+  }
+  test(id:any,event:any){
+    this.selectedMachines[id]=(<HTMLInputElement>event.target).value;
+    this.taskForm.value['MachinePath']=this.selectedMachines;
   }
 }
