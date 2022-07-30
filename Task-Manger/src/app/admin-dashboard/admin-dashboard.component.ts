@@ -6,6 +6,7 @@ export interface Permissions {
   id: number;
   name: string;
 }
+
 declare var $:any //declear $ to use jquery
 @Component({
   selector: 'app-admin-dashboard',
@@ -20,7 +21,7 @@ export class AdminDashboardComponent implements OnInit {
     checkbox1 : new FormControl(false, []),
     checkbox2 : new FormControl(false, []),
     checkbox3 : new FormControl(false, []),
-    checkbox4 : new FormControl(false, []),
+    checkbox4 : new FormControl(false, [])
 
   })
   machineForm = new FormGroup({
@@ -44,9 +45,9 @@ export class AdminDashboardComponent implements OnInit {
     PaperType: new FormControl('',Validators.compose([Validators.required])),
     LeatherType: new FormControl('',Validators.compose([Validators.required])),
     imgSrc: new FormControl('',Validators.compose([Validators.required])),
-    CNC: new FormControl('',Validators.compose([Validators.required])),
-    CTB: new FormControl('',Validators.compose([Validators.required])),
-    Stamp: new FormControl('',Validators.compose([Validators.required])),
+    CNC: new FormControl(false,[]),
+    CTB: new FormControl(false,[]),
+    Stamp: new FormControl(false,[]),
     StepCode: new FormControl('',Validators.compose([Validators.required])),
     StepName: new FormControl('',Validators.compose([Validators.required])),
     StepFactor: new FormControl('',Validators.compose([Validators.required])),
@@ -86,8 +87,8 @@ export class AdminDashboardComponent implements OnInit {
     { id: 2, name: 'Create/Edit Task' },
     { id: 3, name: 'Reports' },
     { id: 4, name: 'Permission' }
-
   ];
+
 
 
   constructor(public Service:ApiService) { 
@@ -187,7 +188,7 @@ export class AdminDashboardComponent implements OnInit {
     this.orderTotalAmount=(parseInt(SheetPrice)*parseFloat(OrderSheets))+"";
   }
   addTask(){
-    console.log(this.itemForm.value);
+    console.log(this.taskForm.value);
     // this.Service.postFun('importTasks',this.itemForm.value).subscribe(data => {
     //   this.ItemSuccessMsg=true;
     // })

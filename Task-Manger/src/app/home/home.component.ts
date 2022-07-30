@@ -18,9 +18,13 @@ import jwt from 'jwt-decode';
 export class HomeComponent implements OnInit {
   machines:any;
   tasks:any;
+  orderSheets:any;
+  sheetsPrice:any;
+  orderTotalAmount:any;
   stoppedMachines:any;
   theArray:any;
   task:any;
+  input:any;
   tasksRight:any;
   counters:any;
   machineIds:any;
@@ -41,29 +45,34 @@ export class HomeComponent implements OnInit {
     username: new FormControl('')
   })
   orderForm = new FormGroup({
-    CustomerName: new FormControl('',),
-    CustomerCode: new FormControl('',),
-    OrderReference: new FormControl('',),
-    OrderStatus: new FormControl('',),
-    OrderNumber: new FormControl('',),
-    OrderTypeCode: new FormControl('',),
-    OrderTypeName: new FormControl('',),
-    OrderPriority: new FormControl('',),
-    OrderTotalAmount: new FormControl('',),
-    PiecesPreSheets: new FormControl('',),
+    CustomerName:  new FormControl('',),
+    CustomerCode:  new FormControl('',),
+    OrderReference:  new FormControl('',),
+    OrderStatus:  new FormControl('',),
+    OrderNumber:  new FormControl('',),
+    OrderTypeCode:  new FormControl('',),
+    OrderTypeName:  new FormControl('',),
+    OrderPriority:  new FormControl('',),
+    OrderTotalAmount:  new FormControl('',),
+    PiecesPreSheets:  new FormControl('',),
     OrderSheets: new FormControl('',),
-    PiecePrice: new FormControl('',),
-    TotalPrice: new FormControl('',),
-    SheetPrice: new FormControl('',),
-    CNC: new FormControl('',),
-    CTB: new FormControl('',),
-    Stamp: new FormControl('',),
+    PiecePrice:  new FormControl('',),
+    TotalPieces:  new FormControl('',),
+    SheetPrice:  new FormControl('',),
+    PaperType: new FormControl('',),
+    LeatherType:  new FormControl('',),
+    imgSrc:  new FormControl('',),
+    CNC: new FormControl(false,[]),
+    CTB: new FormControl(false,[]),
+    Stamp: new FormControl(false,[]),
     StepCode: new FormControl('',),
-    StepName: new FormControl('',),
-    StepFactor: new FormControl('',),
+    StepName:  new FormControl('',),
+    StepFactor:  new FormControl('',),
+    MachinePath: new FormControl('',),
   })
   customers: any;
   anything: any;
+  selectedMachines:any;
 
 
   constructor(public Service:ApiService) {
@@ -96,6 +105,37 @@ export class HomeComponent implements OnInit {
     seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
     this.remainingTime=days+"D"+" : "+hours+"H"+" : "+minutes+"M"+" : "+seconds+"S";
     return this.remainingTime
+  }
+  sheetsOrderCounter(){
+    let PiecesPreSheets='0',TotalPieces='0';
+    if (this.orderForm.get('PiecesPreSheets')?.value!=null&&this.orderForm.get('PiecesPreSheets')?.value!=undefined&&this.orderForm.get('PiecesPreSheets')?.value!="") {
+      PiecesPreSheets=this.orderForm.get('PiecesPreSheets')?.value+"";
+    }
+    if (this.orderForm.get('TotalPieces')?.value!=null&&this.orderForm.get('TotalPieces')?.value!=undefined&&this.orderForm.get('TotalPieces')?.value!="") {
+      TotalPieces=this.orderForm.get('TotalPieces')?.value+"";
+    }
+    this.orderSheets=(parseInt(TotalPieces)/parseInt(PiecesPreSheets))+"";
+  }
+  sheetsPriceCalculator(){
+    let PiecesPreSheets='0',PiecePrice='0';
+    if (this.orderForm.get('PiecesPreSheets')?.value!=null&&this.orderForm.get('PiecesPreSheets')?.value!=undefined&&this.orderForm.get('PiecesPreSheets')?.value!="") {
+      PiecesPreSheets=this.orderForm.get('PiecesPreSheets')?.value+"";
+    }
+    if (this.orderForm.get('PiecePrice')?.value!=null&&this.orderForm.get('PiecePrice')?.value!=undefined&&this.orderForm.get('PiecePrice')?.value!="") {
+      PiecePrice=this.orderForm.get('PiecePrice')?.value+"";
+    }
+    console.log(PiecesPreSheets,PiecePrice);
+    this.sheetsPrice=(parseInt(PiecesPreSheets)*parseInt(PiecePrice))+"";
+  }
+  orderTotalAmountCalculator(){
+    let SheetPrice='0',OrderSheets='0';
+    if (this.orderForm.get('SheetPrice')?.value!=null&&this.orderForm.get('SheetPrice')?.value!=undefined&&this.orderForm.get('SheetPrice')?.value!="") {
+      SheetPrice=this.orderForm.get('SheetPrice')?.value+"";
+    }
+    if (this.orderForm.get('OrderSheets')?.value!=null&&this.orderForm.get('OrderSheets')?.value!=undefined&&this.orderForm.get('OrderSheets')?.value!="") {
+      OrderSheets=this.orderForm.get('OrderSheets')?.value+"";
+    }
+    this.orderTotalAmount=(parseInt(SheetPrice)*parseFloat(OrderSheets))+"";
   }
   deleteMachine(element:any){
     this.Service.postFun('deleteMachine',{id:element}).subscribe(data => {
@@ -163,7 +203,6 @@ export class HomeComponent implements OnInit {
     this.Service.postFun('viewTask',{id}).subscribe(data => {
       this.taskDetails=data;
        this.anything= this.taskDetails.id
-       console.log(this.orderForm);
     })
     
   }
@@ -203,6 +242,14 @@ export class HomeComponent implements OnInit {
 
     this.Service.postFun('editOrder',this.orderForm.value).subscribe(data => {
     })
+  }
+  machinePath(event:any){
+    this.selectedMachines=new Array(event);
+    console.log(event);
+  }
+  test(id:any,event:any){
+    this.selectedMachines[id]=(<HTMLInputElement>event.target).value;
+    this.orderForm.value['MachinePath']=this.selectedMachines;
   }
 
   onDrop(event:CdkDragDrop<string []>,status:any){

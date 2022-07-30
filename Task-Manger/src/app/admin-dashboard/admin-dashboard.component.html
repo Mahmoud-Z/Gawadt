@@ -73,8 +73,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -446,56 +444,32 @@
                     <p class="text-center bg-dark text-white">Side Steps Availability</p>
                     <div class="row ">
                         <div class="col-md-4 ">
-                            <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingCNC" placeholder="CNC"
-                                    formControlName="CNC">
-                                <label for="floatingCNC">CNC</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                    id="flexCheckChecked" name="CNC"
+                                    formControlName="CNC" />
+                                <label class="form-check-label" for="flexCheckChecked">CNC
+                                </label>
                             </div>
                         </div>
                         <div class="col-md-4 ">
-                            <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingCTB" placeholder="CTB"
-                                    formControlName="CTB">
-                                <label for="floatingCTB">CTB</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                    id="flexCheckChecked" name="CTB"
+                                    formControlName="CTB" />
+                                <label class="form-check-label" for="flexCheckChecked">CTB
+                                </label>
                             </div>
                         </div>
                         <div class="col-md-4 ">
-                            <div class="form-floating mb-2 form-group ">
-                                <input type="text" class="form-control" id="floatingStamp" placeholder="Stamp"
-                                    formControlName="Stamp">
-                                <label for="floatingStamp">Stamp</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                    id="flexCheckChecked" name="Stamp"
+                                    formControlName="Stamp" />
+                                <label class="form-check-label" for="flexCheckChecked">Stamp
+                                </label>
                             </div>
                         </div>
-
-
-
-                    </div>
-                    <div class="row py-2">
-                        <div class="col-md-4 ">
-                            <div *ngIf="taskForm.get('CNC')?.invalid && taskForm.get('CNC')?.touched">
-                                <small class="btn btn-danger px-5 form-control "
-                                    *ngIf="taskForm.get('CNC')?.errors?.['required']"> CNC is
-                                    required</small>
-
-                            </div>
-                        </div>
-                        <div class="col-md-4 ">
-                            <div *ngIf="taskForm.get('CTB')?.invalid && taskForm.get('CTB')?.touched">
-                                <small class="btn btn-danger px-5 form-control "
-                                    *ngIf="taskForm.get('CTB')?.errors?.['required']">CTB is
-                                    required</small>
-
-                            </div>
-                        </div>
-                        <div class="col-md-4 ">
-                            <div *ngIf="taskForm.get('Stamp')?.invalid && taskForm.get('Stamp')?.touched">
-                                <small class="btn btn-danger px-5 form-control "
-                                    *ngIf="taskForm.get('Stamp')?.errors?.['required']"> Stamp is
-                                    required</small>
-
-                            </div>
-                        </div>
-                  
                     </div>
                     <p class="text-center bg-dark text-white">Default Steps</p>
                     <div class="row ">
