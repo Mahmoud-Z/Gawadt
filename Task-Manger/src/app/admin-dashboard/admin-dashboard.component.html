@@ -178,7 +178,7 @@
                                 <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Customer Name
                                     :</label>
                                 <select formControlName="CustomerName" id="floatingCustomerName" class="form-control text-center me-5  ">
-                                    <option class="" value="test" *ngFor="let i of customers">{{i.customerName}}</option>
+                                    <option class="" value="{{i.customerName}}" *ngFor="let i of customers">{{i.customerName}}</option>
                                 </select>
                             </div>
                         </div>

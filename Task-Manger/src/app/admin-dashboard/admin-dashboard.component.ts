@@ -44,14 +44,14 @@ export class AdminDashboardComponent implements OnInit {
     SheetPrice: new FormControl('',Validators.compose([Validators.required])),
     PaperType: new FormControl('',Validators.compose([Validators.required])),
     LeatherType: new FormControl('',Validators.compose([Validators.required])),
-    imgSrc: new FormControl('',Validators.compose([Validators.required])),
+    imgSrc: new FormControl('',),
     CNC: new FormControl(false,[]),
     CTB: new FormControl(false,[]),
     Stamp: new FormControl(false,[]),
     StepCode: new FormControl('',Validators.compose([Validators.required])),
     StepName: new FormControl('',Validators.compose([Validators.required])),
     StepFactor: new FormControl('',Validators.compose([Validators.required])),
-    MachinePath: new FormControl('',Validators.compose([Validators.required])),
+    MachinePath: new FormControl('',),
   })
   itemForm = new FormGroup({
     itemName: new FormControl('',Validators.compose([Validators.required])),
@@ -189,9 +189,9 @@ export class AdminDashboardComponent implements OnInit {
   }
   addTask(){
     console.log(this.taskForm.value);
-    // this.Service.postFun('importTasks',this.itemForm.value).subscribe(data => {
-    //   this.ItemSuccessMsg=true;
-    // })
+    this.Service.postFun('importTasks',this.taskForm.value).subscribe(data => {
+      this.ItemSuccessMsg=true;
+    })
   }
   addCustomer(){
     this.Service.postFun('importCustomer',this.customerForm.value).subscribe(data => {
