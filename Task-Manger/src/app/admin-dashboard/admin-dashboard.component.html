@@ -180,7 +180,7 @@
                                 <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Customer Name
                                     :</label>
                                 <select formControlName="CustomerName" id="floatingCustomerName" class="form-control text-center me-5  ">
-                                    <option class="" value="test" *ngFor="let i of customers">{{i.customerName  }}</option>
+                                    <option class="" value="test" *ngFor="let i of customers">{{i.customerName}}</option>
                                 </select>
                             </div>
                         </div>
@@ -650,6 +650,20 @@
                                     *ngIf="customerForm.get('customerName')?.invalid && customerForm.get('customerName')?.touched">
                                     <small class="btn btn-danger px-5 form-control"
                                         *ngIf="customerForm.get('customerName')?.errors?.['required']">Customer Name is
+                                        required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                            <div class="form-floating mb-3 form-group w-50">
+                                <input type="text" class="form-control" id="floatingInput" placeholder="Customer Code"
+                                    formControlName="customerCode">
+                                <label for="floatingInput">Customer Code</label>
+                                <div
+                                    *ngIf="customerForm.get('customerCode')?.invalid && customerForm.get('customerCode')?.touched">
+                                    <small class="btn btn-danger px-5 form-control"
+                                        *ngIf="customerForm.get('customerCode')?.errors?.['required']">Customer Code is
                                         required</small>
                                 </div>
                             </div>

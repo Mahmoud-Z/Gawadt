@@ -59,7 +59,9 @@ export class AdminDashboardComponent implements OnInit {
 
   })
   customerForm = new FormGroup({
-    customerName: new FormControl('',Validators.compose([Validators.required]))
+    customerName: new FormControl('',Validators.compose([Validators.required])),
+    customerCode: new FormControl('',Validators.compose([Validators.required]))
+
   })
   orderSheets:any;
   sheetsPrice:any;
