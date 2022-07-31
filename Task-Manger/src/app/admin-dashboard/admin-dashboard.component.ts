@@ -51,7 +51,7 @@ export class AdminDashboardComponent implements OnInit {
     StepCode: new FormControl('',Validators.compose([Validators.required])),
     StepName: new FormControl('',Validators.compose([Validators.required])),
     StepFactor: new FormControl('',Validators.compose([Validators.required])),
-    MachinePath: new FormControl('',),
+    MachinePath: new FormControl(''),
   })
   itemForm = new FormGroup({
     itemName: new FormControl('',Validators.compose([Validators.required])),
@@ -214,13 +214,13 @@ export class AdminDashboardComponent implements OnInit {
     })
   }
   machinePath(event:any){
-    console.log("asgjasngkjn");
-    
     this.selectedMachines=new Array(event);
     console.log(event);
   }
   test(id:any,event:any){
+    
     this.selectedMachines[id]=(<HTMLInputElement>event.target).value;
+
     this.taskForm.value['MachinePath']=this.selectedMachines;
   }
 }
