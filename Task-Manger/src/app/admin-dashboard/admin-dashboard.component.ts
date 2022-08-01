@@ -79,6 +79,7 @@ export class AdminDashboardComponent implements OnInit {
   CustomerSuccessMsg: boolean = false;
   user: any;
   selectedMachines:any;
+  selectedMachines2:any;
   machines:any;
   input:any;
   permissionData: Permissions[] = [
@@ -215,12 +216,12 @@ export class AdminDashboardComponent implements OnInit {
   }
   machinePath(event:any){
     this.selectedMachines=new Array(event);
+    this.selectedMachines2=new Array(event);
     console.log(event);
   }
   test(id:any,event:any){
-    
-    this.selectedMachines[id]=(<HTMLInputElement>event.target).value;
-
-    this.taskForm.value['MachinePath']=this.selectedMachines;
+    this.selectedMachines2[id]=(<HTMLInputElement>event.target).value;
+    this.taskForm.value['MachinePath']=this.selectedMachines2;
+    console.log(this.selectedMachines2);
   }
 }
