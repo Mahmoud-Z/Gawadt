@@ -55,20 +55,20 @@ export class HomeComponent implements OnInit {
     OrderPriority:  new FormControl('',),
     OrderTotalAmount:  new FormControl('',),
     PiecesPreSheets:  new FormControl('',),
-    OrderSheets: new FormControl('',),
+    OrderSheets:  new FormControl('',),
     PiecePrice:  new FormControl('',),
     TotalPieces:  new FormControl('',),
     SheetPrice:  new FormControl('',),
-    PaperType: new FormControl('',),
+    PaperType:  new FormControl('',),
     LeatherType:  new FormControl('',),
-    imgSrc:  new FormControl('',),
+    imgSrc: new FormControl('',),
     CNC: new FormControl(false,[]),
     CTB: new FormControl(false,[]),
     Stamp: new FormControl(false,[]),
-    StepCode: new FormControl('',),
+    StepCode:  new FormControl('',),
     StepName:  new FormControl('',),
     StepFactor:  new FormControl('',),
-    MachinePath: new FormControl('',),
+    MachinePath: new FormControl('',)
   })
   customers: any;
   anything: any;
