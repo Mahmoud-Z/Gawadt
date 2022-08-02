@@ -361,10 +361,15 @@
                                   </div>
                               </div>
                               <ul style="height: 250px;border:solid 1px #000;overflow-y: scroll;" class="list-group list-group-flush scrollbar" id="{{i.id}}" cdkDropList [cdkDropListConnectedTo]="machineIds" (cdkDropListDropped)="onDrop($event,i.status)" [cdkDropListData]="tasks[i.id]" >
-                                  <li class="list-group-item" cdkDrag class="drag-item" [cdkDragDisabled]="i.status=='false'||userPrivlage[0].taskCheckBox=='false'" *ngFor="let j of tasks[i.id]" (click)="viewTask(j.id)">
+                                  <li class="list-group-item" cdkDrag class="drag-item" [cdkDragDisabled]="i.status=='false'||userPrivlage[0].taskCheckBox=='false'" *ngFor="let j of tasks[i.id];index as s" (click)="viewTask(j.id)">
                                       <div class="row">
-                                      <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
-                                      <p *ngIf="i.status=='true'">{{counters[j.id]}}</p>
+                                        <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
+                                        <div class="form-check form-switch mx-auto" *ngIf="userPrivlage[0].machineCheckBox=='true'">
+                                            <input class="form-check-input" type="checkbox"
+                                                (change)="startStopTask($event,tasks[i.id][s].id)" role="switch"
+                                                id="flexSwitchCheckChecked" [checked]="j.status=='true'" />
+                                        </div>
+                                        <p *ngIf="j.status=='true'">{{counters[j.id]}}</p>
                                       </div>
                                   </li>
                               </ul>

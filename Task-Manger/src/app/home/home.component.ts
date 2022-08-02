@@ -88,8 +88,10 @@ export class HomeComponent implements OnInit {
     interval(1000).subscribe((ev)=>{
       this.counters={}
       for (let i = 0; i < Object.keys(this.tasks).length; i++) {
-        if(this.tasks[Object.keys(this.tasks)[i]][0]!=undefined)
-          this.counters[this.tasks[Object.keys(this.tasks)[i]][0].id]=this.timeCounter(this.tasks[Object.keys(this.tasks)[i]][0].endDate)
+          for (let j = 0; j < this.tasks[Object.keys(this.tasks)[i]].length; j++) {
+            if(this.tasks[Object.keys(this.tasks)[i]][j]!=undefined)
+              this.counters[this.tasks[Object.keys(this.tasks)[i]][j].id]=this.timeCounter(this.tasks[Object.keys(this.tasks)[i]][j].endDate)
+          }
       }
     }) 
   }
@@ -174,7 +176,7 @@ export class HomeComponent implements OnInit {
   }
   updateTask(machineId:any,taskId:any,machineIdBefore:any,taskIDsBefore:any) {
     this.Service.postFun('updateTask',{machineId,taskId,machineIdBefore,taskIDsBefore}).subscribe(data => {
-      // this.getTasks()
+      this.getTasks()
     })
   }
   timeCalculation(previousContainer:any,container:any,previousIndex:any,currentIndex:any){
@@ -196,6 +198,17 @@ export class HomeComponent implements OnInit {
     } else {
       this.Service.postFun('stop',{id}).subscribe(data => {
         this.getMachines()
+      })
+    }
+  }
+  startStopTask(event:any,id:any){
+    if (event.target.checked==true) {
+      this.Service.postFun('startTask',{id}).subscribe(data => {
+        this.getTasks()
+      })
+    } else {
+      this.Service.postFun('stopTask',{id}).subscribe(data => {
+        this.getTasks()
       })
     }
   }
@@ -277,20 +290,13 @@ export class HomeComponent implements OnInit {
       for (let i = 0; i < event.previousContainer.data.length; i++) {
         taskIDsBefore.push(JSON.parse(JSON.stringify(event.previousContainer.data[i])).id)
       }
-      this.timeCalculation(
-        event.previousContainer.id,
-        event.container.id,
-        event.previousIndex,
-        event.currentIndex)
-      this.updateTask(event.container.id,taskIDs,event.previousContainer.id,taskIDsBefore)
-
-      // let oldTask;
-      // if (JSON.stringify(event.previousContainer.data[event.previousIndex])==undefined) {
-      //   oldTask=JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id;
-      // } else {
-      //   oldTask=JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])).id
-      // }
-      // this.timeCalculation(JSON.parse(JSON.stringify(event.container.data[event.currentIndex])).id,oldTask)
+      // this.timeCalculation(
+      //   event.previousContainer.id,
+      //   event.container.id,
+      //   event.previousIndex,
+      //   event.currentIndex)
+      this.updateTask(event.container.id,taskIDs,event.previousContainer.id,taskIDsBefore) 
+      console.log(this.tasks);
     }
   }
 }
