@@ -140,6 +140,8 @@ export class AdminDashboardComponent implements OnInit {
   }
   addUser() {
     this.Service.postFun('addUser',this.userForm.value).subscribe(data => {
+      console.log(this.userForm);
+      
       this.successMsg=true;
       this.FailMsg=false;
     })

@@ -215,7 +215,34 @@ export class HomeComponent implements OnInit {
   viewTask(id:any){
     this.Service.postFun('viewTask',{id}).subscribe(data => {
       this.taskDetails=data;
-       this.anything= this.taskDetails.id
+      console.log(this.taskDetails);
+      this.orderForm.setValue({
+        CustomerName: this.taskDetails.customerName,
+        CustomerCode: this.taskDetails.customerName,
+        OrderReference: this.taskDetails.customerName,
+        OrderStatus: this.taskDetails.customerName,
+        OrderNumber: this.taskDetails.customerName,
+        OrderTypeCode: this.taskDetails.customerName,
+        OrderTypeName: this.taskDetails.customerName,
+        OrderPriority: this.taskDetails.customerName,
+        OrderTotalAmount: this.taskDetails.customerName,
+        PiecesPreSheets: this.taskDetails.customerName,
+        OrderSheets: this.taskDetails.customerName,
+        PiecePrice: this.taskDetails.customerName,
+        TotalPieces: this.taskDetails.customerName,
+        SheetPrice: this.taskDetails.customerName,
+        PaperType: this.taskDetails.customerName,
+        LeatherType: this.taskDetails.customerName,
+        imgSrc: this.taskDetails.customerName,
+        CNC: true,
+        CTB: true,
+        Stamp: true,
+        StepCode: this.taskDetails.customerName,
+        StepName: this.taskDetails.customerName,
+        StepFactor: this.taskDetails.customerName,
+        MachinePath: this.taskDetails.customerName,
+      })
+      
     })
     
   }
