@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   tasks:any;
   orderSheets:any;
   sheetsPrice:any;
+  
   orderTotalAmount:any;
   stoppedMachines:any;
   theArray:any;
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit {
   taskDetails: any;
   permissionResponse: any;
   userPrivlage: any;
+   machineNumber:any;
   permissionForm = new FormGroup({
     permissionItemId: new FormControl('',Validators.compose([Validators.required])),
     reason: new FormControl('',Validators.compose([Validators.required])),
@@ -62,25 +64,33 @@ export class HomeComponent implements OnInit {
     PaperType:  new FormControl('',),
     LeatherType:  new FormControl('',),
     imgSrc: new FormControl('',),
-    CNC: new FormControl(false,[]),
-    CTB: new FormControl(false,[]),
-    Stamp: new FormControl(false,[]),
     StepCode:  new FormControl('',),
     StepName:  new FormControl('',),
     StepFactor:  new FormControl('',),
-    MachinePath: new FormControl('',)
+    MachinePath: new FormControl('',),
+    CNC: new FormControl(false,[]),
+    CTB: new FormControl(false,[]),
+    Stamp: new FormControl(false,[]),
+
   })
   customers: any;
   anything: any;
   selectedMachines:any;
+  cncboolen: boolean=false;
+  ctpboolen: boolean=false;
+  stampboolen: boolean=false;
 
 
-  constructor(public Service:ApiService) {
+
+
+  constructor(public Service:ApiService ) {
+
     var token=localStorage.getItem("token");
     this.userPrivlage=jwt(token||"");
     this.userPrivlage=this.userPrivlage.user
-    this.username=this.userPrivlage[0].userName    
+    this.username=this.userPrivlage[0].userName  
     this.getMachines()
+    this.getCustomers()
     this.getTasks()
     this.getTasksRight()
     this.viewTask(0)
@@ -161,7 +171,6 @@ export class HomeComponent implements OnInit {
   getCustomers(){
     this.Service.getFun('getCustomers').subscribe(data => {
       this.customers=data;
-      console.log(this.customers);
     })
   }
   getTasks(){
@@ -214,36 +223,64 @@ export class HomeComponent implements OnInit {
   }
   viewTask(id:any){
     this.Service.postFun('viewTask',{id}).subscribe(data => {
-      this.taskDetails=data;
-      console.log(this.taskDetails);
+      this.taskDetails=data;     
+      
+      if(this.taskDetails.CNC=='true'){
+        this.cncboolen=true;
+      }
+      if(this.taskDetails.CTB=='true'){
+        this.ctpboolen=true;
+  
+      }
+      if(this.taskDetails.Stamp=='true'){
+        this.stampboolen=true;
+      }
+
+      this.machineNumber = this.taskDetails.machinePath.split(',').length;      
+      this.machinePath(this.machineNumber) 
+      this.input= this.machineNumber; 
+      this.selectedMachines= this.taskDetails.machinePath.split(',')
+      console.log("selectedMachines",this.selectedMachines);
+      this.orderForm.controls['StepCode'].setValue(this.taskDetails.stepCode);
+      this.orderForm.controls['StepName'].setValue(this.taskDetails.stepName);
+      this.orderForm.controls['StepFactor'].setValue(this.taskDetails.stepFactor);
+
+
+
       this.orderForm.setValue({
         CustomerName: this.taskDetails.customerName,
-        CustomerCode: this.taskDetails.customerName,
-        OrderReference: this.taskDetails.customerName,
-        OrderStatus: this.taskDetails.customerName,
-        OrderNumber: this.taskDetails.customerName,
-        OrderTypeCode: this.taskDetails.customerName,
-        OrderTypeName: this.taskDetails.customerName,
-        OrderPriority: this.taskDetails.customerName,
-        OrderTotalAmount: this.taskDetails.customerName,
-        PiecesPreSheets: this.taskDetails.customerName,
-        OrderSheets: this.taskDetails.customerName,
-        PiecePrice: this.taskDetails.customerName,
-        TotalPieces: this.taskDetails.customerName,
-        SheetPrice: this.taskDetails.customerName,
-        PaperType: this.taskDetails.customerName,
-        LeatherType: this.taskDetails.customerName,
+        CustomerCode: this.taskDetails.customerCode,
+        OrderReference: this.taskDetails.orderReference ,
+        OrderStatus: this.taskDetails.orderStatus,
+        OrderNumber: this.taskDetails.orderNumber,
+        OrderTypeCode: this.taskDetails.orderTypeCode,
+        OrderTypeName: this.taskDetails.orderTypeName,
+        OrderPriority: this.taskDetails.orderPriority,
+        OrderTotalAmount: this.taskDetails.orderTotalAmount,
+        PiecesPreSheets: this.taskDetails.piecesPerSheets,
+        OrderSheets: this.taskDetails.orderSheets,
+        PiecePrice: this.taskDetails.piecePrice,
+        TotalPieces: this.taskDetails.totalPieces,
+        SheetPrice: this.taskDetails.sheetPrice,
+        PaperType: this.taskDetails.paperType,
+        LeatherType: this.taskDetails.leatherType,
         imgSrc: this.taskDetails.customerName,
-        CNC: true,
-        CTB: true,
-        Stamp: true,
-        StepCode: this.taskDetails.customerName,
-        StepName: this.taskDetails.customerName,
-        StepFactor: this.taskDetails.customerName,
-        MachinePath: this.taskDetails.customerName,
+        StepCode: this.taskDetails.stepCode,
+        StepName: this.taskDetails.stepName,
+        StepFactor: this.taskDetails.stepFactor,
+        MachinePath: this.taskDetails.orderReference,
+        CNC: this.taskDetails.CNC,
+        CTB: this.taskDetails.CTB,
+        Stamp: this.taskDetails.stamp,
+ 
       })
+
+   
+      
       
     })
+
+  
     
   }
   switchPermission(event:any){
@@ -267,8 +304,6 @@ export class HomeComponent implements OnInit {
   }
   Permssion(){
     this.permissionForm.value['username']=this.username;
-    console.log(this.permissionForm);
-    
     this.Service.postFun('addPermission',this.permissionForm.value).subscribe(data => {
 
     })
@@ -279,7 +314,8 @@ export class HomeComponent implements OnInit {
     })
   }
   editOrder(){
-
+    console.log(this.orderForm);
+    
     this.Service.postFun('editOrder',this.orderForm.value).subscribe(data => {
     })
   }
@@ -290,6 +326,9 @@ export class HomeComponent implements OnInit {
   test(id:any,event:any){
     this.selectedMachines[id]=(<HTMLInputElement>event.target).value;
     this.orderForm.value['MachinePath']=this.selectedMachines;
+  }
+  customTrackBy(index: number, obj: any): any {
+    return index;
   }
 
   onDrop(event:CdkDragDrop<string []>,status:any){
@@ -309,6 +348,7 @@ export class HomeComponent implements OnInit {
           event.currentIndex
         )
       }
+      
       let taskIDs=[];
       let taskIDsBefore=[];
       for (let i = 0; i < event.container.data.length; i++) {
