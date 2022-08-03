@@ -366,7 +366,7 @@
                                       <div class="row">
                                         <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
                                         <div class="form-check form-switch mx-auto" *ngIf="userPrivlage[0].machineCheckBox=='true'">
-                                            <input class="form-check-input" type="checkbox"
+                                            <input *ngIf="i.id!=1" class="form-check-input" type="checkbox"
                                                 (change)="startStopTask($event,tasks[i.id][s].id)" role="switch"
                                                 id="flexSwitchCheckChecked" [checked]="j.status=='true'" />
                                         </div>
