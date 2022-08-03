@@ -304,8 +304,8 @@
                 <div class="col-md-4 " *ngFor="let i of selectedMachines;index as s">
                     <div class="form-floating mb-2 form-group ">
                         <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Machine {{s+1}}</label>
-                        <select (change)="test(s,$event)" id="floatingCustomerName" class="form-control text-center me-5  ">
-                            <option class="" [value]="i.id" *ngFor="let i of machines" [selected]="i.id==selectedMachines[s]">{{i.name}}</option>
+                        <select (change)="test(s,$event)" [(value)]="selectedMachines2[s]" id="floatingCustomerName" class="form-control text-center me-5  ">
+                            <option class="" [value]="i.id" *ngFor="let i of machines">{{i.name}}</option>
                         </select>
                     </div>
                 </div>

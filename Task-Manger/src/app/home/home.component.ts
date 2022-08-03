@@ -79,6 +79,7 @@ export class HomeComponent implements OnInit {
   cncboolen: boolean=false;
   ctpboolen: boolean=false;
   stampboolen: boolean=false;
+  selectedMachines2: any;
 
 
 
@@ -239,8 +240,8 @@ export class HomeComponent implements OnInit {
       this.machineNumber = this.taskDetails.machinePath.split(',').length;      
       this.machinePath(this.machineNumber) 
       this.input= this.machineNumber; 
-      this.selectedMachines= this.taskDetails.machinePath.split(',')
-      console.log("selectedMachines",this.selectedMachines);
+      this.selectedMachines2= this.taskDetails.machinePath.split(',')
+      console.log("selectedMachines2",this.selectedMachines2);
       this.orderForm.controls['StepCode'].setValue(this.taskDetails.stepCode);
       this.orderForm.controls['StepName'].setValue(this.taskDetails.stepName);
       this.orderForm.controls['StepFactor'].setValue(this.taskDetails.stepFactor);
@@ -268,14 +269,12 @@ export class HomeComponent implements OnInit {
         StepCode: this.taskDetails.stepCode,
         StepName: this.taskDetails.stepName,
         StepFactor: this.taskDetails.stepFactor,
-        MachinePath: this.taskDetails.orderReference,
+        MachinePath: this.selectedMachines2,
         CNC: this.taskDetails.CNC,
         CTB: this.taskDetails.CTB,
         Stamp: this.taskDetails.stamp,
- 
       })
-
-   
+      this.orderForm.value['MachinePath']=this.selectedMachines2;
       
       
     })
@@ -314,18 +313,18 @@ export class HomeComponent implements OnInit {
     })
   }
   editOrder(){
-    console.log(this.orderForm);
-    
+    console.log(this.orderForm.get("MachinePath")?.value);
+    console.log(this.selectedMachines2);
+    this.orderForm.value['MachinePath']=this.selectedMachines2;
     this.Service.postFun('editOrder',this.orderForm.value).subscribe(data => {
     })
   }
   machinePath(event:any){
     this.selectedMachines=new Array(event);
-    console.log(event);
+    this.selectedMachines2=new Array(event);
   }
   test(id:any,event:any){
-    this.selectedMachines[id]=(<HTMLInputElement>event.target).value;
-    this.orderForm.value['MachinePath']=this.selectedMachines;
+    this.selectedMachines2[id]=(<HTMLInputElement>event.target).value;
   }
   customTrackBy(index: number, obj: any): any {
     return index;
