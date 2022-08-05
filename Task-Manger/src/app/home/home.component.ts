@@ -32,7 +32,8 @@ export class HomeComponent implements OnInit {
   machinePermissionStop:boolean=false;
   machinePermissionStart:boolean=false;
   username:any;
-  taskPermission:boolean=false;
+  taskPermissionStop:boolean=false;
+  taskPermissionStart:boolean=false;
   remainingTime: any;
   taskDetails: any;
   permissionResponse: any;
@@ -80,6 +81,9 @@ export class HomeComponent implements OnInit {
   ctpboolen: boolean=false;
   stampboolen: boolean=false;
   selectedMachines2: any;
+  custom: any;
+  customerName:any;
+
 
 
 
@@ -275,31 +279,40 @@ export class HomeComponent implements OnInit {
         Stamp: this.taskDetails.stamp,
       })
       this.orderForm.value['MachinePath']=this.selectedMachines2;
-      
-      
     })
 
   
     
   }
   switchPermission(event:any){
-    if ((<HTMLInputElement>event.target).value =='taskPermission')
+    if ((<HTMLInputElement>event.target).value =='taskPermissionStop')
     {
-      this.taskPermission=true;
+      this.taskPermissionStop=true;
       this.machinePermissionStart=false;
       this.machinePermissionStop=false;
-
+      this.taskPermissionStart=false;
+    }
+    else if ((<HTMLInputElement>event.target).value =='taskPermissionStart'){
+      this.taskPermissionStart=true;
+      this.machinePermissionStop=false;
+      this.machinePermissionStart=false;
+      this.taskPermissionStop=false;
     }
     else if ((<HTMLInputElement>event.target).value =='machinePermissionStop'){
       this.machinePermissionStop=true;
       this.machinePermissionStart=false;
-      this.taskPermission=false;
+      this.taskPermissionStop=false;
+      this.taskPermissionStart=false;
+
     }
     else if ((<HTMLInputElement>event.target).value =='machinePermissionStart'){
-      this.machinePermissionStop=false;
       this.machinePermissionStart=true;
-      this.taskPermission=false;
+      this.machinePermissionStop=false;
+      this.taskPermissionStop=false;
+      this.taskPermissionStart=false;
+
     }
+
   }
   Permssion(){
     this.permissionForm.value['username']=this.username;
@@ -318,6 +331,13 @@ export class HomeComponent implements OnInit {
     this.orderForm.value['MachinePath']=this.selectedMachines2;
     this.Service.postFun('editOrder',this.orderForm.value).subscribe(data => {
     })
+  }
+  OnKey(x:any) { // appending the updated value to the variable
+    this.custom  = this.customers.find((ele:any )=> {
+      
+      return ele.customerName ==  x.target.value
+    })
+    this.orderForm.controls['CustomerCode'].setValue(this.custom.customerCode);
   }
   machinePath(event:any){
     this.selectedMachines=new Array(event);

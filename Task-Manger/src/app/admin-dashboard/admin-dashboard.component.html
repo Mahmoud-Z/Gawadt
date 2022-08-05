@@ -177,8 +177,9 @@
                             <div class="form-floating mb-2 form-group ">
                                 <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Customer Name
                                     :</label>
-                                <select formControlName="CustomerName" id="floatingCustomerName" class="form-control text-center me-5  ">
-                                    <option class="" value="{{i.customerName}}" *ngFor="let i of customers">{{i.customerName}}</option>
+                                    
+                                <select (change)="OnKey($event)" [(ngModel)]="customerName" formControlName="CustomerName" id="floatingCustomerName" class="form-control text-center me-5  ">
+                                    <option  class="" value="{{i.customerName}}" *ngFor="let i of customers">{{i.customerName}}</option>
                                 </select>
                             </div>
                         </div>
@@ -187,9 +188,12 @@
                                 <label for="floatingCustomerCode" class="w-25 btn-dark text-center py-2 ">Customer Code
                                     :</label>
                                 <select formControlName="CustomerCode" id="floatingCustomerCode"
-                                    class="form-control text-center me-5  ">
-                                    <option class="" value="test">test</option>
+                                    class="form-control text-center me-5"  >
+                                    <ng-container *ngFor="let i of customers | filter:customerName" >
+                                    <option class="" [value]="i.customerCode" >{{i.customerCode}}</option>
+                                </ng-container>
                                 </select>
+
                             </div>
                         </div>
                         <div class="col-md-3 ">

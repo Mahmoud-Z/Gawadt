@@ -51,12 +51,21 @@ export class PermissionComponent implements OnInit {
       this.Service.postFun('permissionResponse',this.permissionResponseForm.value).subscribe(data => {
       }) 
     }
-    else if (type=='Transfer the task') {
-      this.permissionResponseForm.value['responseMessage']='Your Request For Transfering The Task have been Accepted';
+    else if (type=='Stop the Order') {
+      this.Service.postFun('stopTask',{id}).subscribe(data => {
+      })
+      this.permissionResponseForm.value['responseMessage']='Your Request For Stopping The Task have been Accepted';
       this.permissionResponseForm.value['responseType']='Aceepted';
       this.Service.postFun('permissionResponse',this.permissionResponseForm.value).subscribe(data => {
       }) 
-      
+    }
+    else if (type=='Start the Order') {
+      this.Service.postFun('startTask',{id}).subscribe(data => {
+      })
+      this.permissionResponseForm.value['responseMessage']='Your Request For Starting The Task have been Accepted';
+      this.permissionResponseForm.value['responseType']='Aceepted';
+      this.Service.postFun('permissionResponse',this.permissionResponseForm.value).subscribe(data => {
+      })   
     }
     this.Service.postFun('submittedColumn',{permissionId}).subscribe(data => {
       console.log(data);
@@ -64,11 +73,17 @@ export class PermissionComponent implements OnInit {
       this.home.getMachines();
       this.home.getTasks();
     })
-    setTimeout(()=>{this.permissionTimeOut()}, 1200000);
+    setTimeout(()=>{this.permissionTimeOut()}, 120000);
   }
   Decline(id:any,type:any,permissionId:any,permissionUsername:any){
+
     this.permissionResponseForm.value['username']=permissionUsername;
-    this.permissionResponseForm.value['responseMessage']='Your Request For Stopping The Machine have been Denied';
+    if (type=='Stop the machine' || type=='Start the machine') {
+      this.permissionResponseForm.value['responseMessage']='Your Request For Stopping The Machine have been Denied';
+    }
+    if (type=='Stop the Order' || type=='Start the Order') {
+      this.permissionResponseForm.value['responseMessage']='Your Request For Stopping The Order have been Denied';
+    }
     this.permissionResponseForm.value['responseType']='Decline';
     this.permissionResponseForm.value['responseStatues']='true';
     this.Service.postFun('permissionResponse',this.permissionResponseForm.value).subscribe(data => {
@@ -91,13 +106,15 @@ export class PermissionComponent implements OnInit {
               
       if (this.Permissions[i].type =='machinePermissionStop') {
         this.Permissions[i].type='Stop the machine'
-        
       } 
       else if (this.Permissions[i].type =='machinePermissionStart') {
         this.Permissions[i].type='Start the machine'
       }
-      else if (this.Permissions[i].type =='taskPermission') {
-        this.Permissions[i].type='Transfer the task'
+      else if (this.Permissions[i].type =='taskPermissionStop') {
+        this.Permissions[i].type='Stop the Order'
+      }
+      else if (this.Permissions[i].type =='taskPermissionStart') {
+        this.Permissions[i].type='Start the Order'
       }
     }
     })

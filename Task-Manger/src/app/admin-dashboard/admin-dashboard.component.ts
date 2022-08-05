@@ -82,6 +82,9 @@ export class AdminDashboardComponent implements OnInit {
   selectedMachines2:any;
   machines:any;
   input:any;
+  customerName:any;
+  custom:any;
+  customerCodeId:any;
   permissionData: Permissions[] = [
     { id: 0, name: 'Create/Edit User' },
     { id: 1, name: 'Create/Edit Machine' },
@@ -122,7 +125,14 @@ export class AdminDashboardComponent implements OnInit {
   });
   }
 
-  
+  OnKey(x:any) { // appending the updated value to the variable
+    this.custom  = this.customers.find((ele:any )=> {
+      
+      return ele.customerName ==  x.target.value
+    })
+    this.taskForm.controls['CustomerCode'].setValue(this.custom.customerCode);
+  }
+
   checkUser(){
     this.Service.postFun('checkUser',this.userForm.value).subscribe(data => {
       
@@ -191,6 +201,9 @@ export class AdminDashboardComponent implements OnInit {
     this.orderTotalAmount=(parseInt(SheetPrice)*parseFloat(OrderSheets))+"";
   }
   addTask(){
+    console.log(this.customerName);
+
+    //this.taskForm.controls['CustomerCode'].setValue(this.taskDetails.stepCode);
     console.log(this.taskForm.value);
     this.Service.postFun('importTasks',this.taskForm.value).subscribe(data => {
       this.ItemSuccessMsg=true;

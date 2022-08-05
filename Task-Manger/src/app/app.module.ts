@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { HomeComponent } from './home/home.component';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { DragDropModule } from "@angular/cdk/drag-drop";
@@ -29,6 +30,7 @@ import { PermissionComponent } from './permission/permission.component';
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    Ng2SearchPipeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

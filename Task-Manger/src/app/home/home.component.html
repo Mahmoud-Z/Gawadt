@@ -15,7 +15,8 @@
             <select (change)="switchPermission($event)" name="PTybe" id="PTybe" formControlName="type">
                 <option value="machinePermissionStop">Stop Machine Permission</option>
                 <option value="machinePermissionStart">Start Machine Permission</option>
-                <option value="taskPermission">Transfer Task Permission</option>
+                <option value="taskPermissionStop">Stop order Permission</option>
+                <option value="taskPermissionStart">Start order Permission</option>
               </select>
             </div>
             <hr>
@@ -52,16 +53,30 @@
                   <option value="MaintenanceEnd">Maintenance end</option>
                   <option value="shift start">Shift Start</option>
                 </select>
-           </div>
-              <div  *ngIf="taskPermission" class="taskPermissionDiv">
+             </div>
+              <div  *ngIf="taskPermissionStop" class="taskPermissionDiv">
                 <label class="p-2">Task Name</label>
                 <select  name="reason" id="reason" formControlName="permissionItemId" >
-                    <option *ngFor="let i of tasksRight" [value]="i.id">{{i.orderTypeName}}</option>
+                 <ng-container *ngFor="let i of tasksRight" >
+                    <option *ngIf="i.status=='true'" [value]="i.id">{{i.orderTypeName}}</option>
+                </ng-container>
                   </select>   
                   <label class="p-2">Reason</label>
                   <select  name="reason" id="reason" formControlName="reason" >
-                      <option value="Task Finished">Task Finished</option>
-                      <option value="Task Moving">Task Moving</option>
+                      <option value="order Finished">order Finished</option>
+                    </select>         
+                
+              </div>
+              <div  *ngIf="taskPermissionStart" class="taskPermissionDiv">
+                <label class="p-2">Task Name</label>
+                <select  name="reason" id="reason" formControlName="permissionItemId" >
+                    <ng-container *ngFor="let i of tasksRight" >
+                        <option *ngIf="i.status=='false'" [value]="i.id">{{i.orderTypeName}}</option>
+                    </ng-container>
+                 </select>   
+                  <label class="p-2">Reason</label>
+                  <select  name="reason" id="reason" formControlName="reason" >
+                      <option value="starting new order">starting new order</option>
                     </select>         
                 
               </div>
@@ -97,19 +112,22 @@
                     <div class="form-floating mb-2 form-group ">
                         <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Customer Name
                             :</label>
-                        <select formControlName="CustomerName" id="floatingCustomerName" class="form-control text-center me-5  ">
+                        <select (change)="OnKey($event)" [(ngModel)]="customerName" formControlName="CustomerName" id="floatingCustomerName" class="form-control text-center me-5  ">
                             <option class="" value="{{i.customerName}}" *ngFor="let i of customers">{{i.customerName}}</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-5 ">
+                <div class="col-md-5  ">
                     <div class="form-floating mb-2 form-group ">
                         <label for="floatingCustomerCode" class="w-25 btn-dark text-center py-2 ">Customer Code
                             :</label>
                         <select formControlName="CustomerCode" id="floatingCustomerCode"
-                            class="form-control text-center me-5  ">
-                            <option class="" value="test">test</option>
+                            class="form-control text-center me-5"  >
+                            <ng-container *ngFor="let i of customers | filter:customerName" >
+                            <option class="" [value]="i.customerCode" >{{i.customerCode}}</option>
+                        </ng-container>
                         </select>
+
                     </div>
                 </div>
                 <div class="col-md-3 ">
