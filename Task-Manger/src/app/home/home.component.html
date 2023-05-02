@@ -13,15 +13,21 @@
             <div>
             <label class="p-3">Permission Type</label>
             <select (change)="switchPermission($event)" name="PTybe" id="PTybe" formControlName="type">
-                <option value="machinePermission">Stop Machine Permission</option>
-                <option value="taskPermission">Transfer Task Permission</option>
+                <option value="machinePermissionStop">Stop Machine Permission</option>
+                <option value="machinePermissionStart">Start Machine Permission</option>
+                <option value="taskPermissionStop">Stop order Permission</option>
+                <option value="taskPermissionStart">Start order Permission</option>
               </select>
             </div>
             <hr>
-              <div *ngIf="machinePermission" class="machinePermissionDiv">
+              <div *ngIf="machinePermissionStop" class="machinePermissionDiv">
                 <label class="p-2">Machine Name</label>
                 <select  name="reason" id="reason" formControlName="permissionItemId" >
-                    <option *ngFor="let i of machines" [value]="i.id+'/'+i.name">{{i.name}}</option>
+                  <ng-container *ngFor="let i of machines" >
+                    <option *ngIf="i.status=='true' "[value]="i.id+'/'+i.name">
+                        {{i.name}}
+                    </option>
+                  </ng-container>
                 </select>
                 <label class="p-2">Reason</label>
                 <select  name="reason" id="reason" formControlName="reason" >
@@ -32,15 +38,45 @@
                   <label class="p-3">Duration</label>
                   <input type="number" placeholder="Permission Duration" formControlName="duration">
              </div>
-              <div  *ngIf="taskPermission" class="taskPermissionDiv">
+             <div *ngIf="machinePermissionStart" class="machinePermissionDiv">
+              <label class="p-2">Machine Name</label>
+              <select  name="reason" id="reason" formControlName="permissionItemId" >
+              <ng-container *ngFor="let i of machines" >
+                <option *ngIf="i.status=='false' "[value]="i.id+'/'+i.name">
+                    {{i.name}}
+                </option>
+              </ng-container>
+              </select>
+              <label class="p-2">Reason</label>
+              <select  name="reason" id="reason" formControlName="reason" >
+                  <option value="BreakEnd">Break Ends</option>
+                  <option value="MaintenanceEnd">Maintenance end</option>
+                  <option value="shift start">Shift Start</option>
+                </select>
+             </div>
+              <div  *ngIf="taskPermissionStop" class="taskPermissionDiv">
                 <label class="p-2">Task Name</label>
                 <select  name="reason" id="reason" formControlName="permissionItemId" >
-                    <option *ngFor="let i of tasksRight" [value]="i.id">{{i.name}}</option>
+                 <ng-container *ngFor="let i of tasksRight" >
+                    <option *ngIf="i.status=='true'" [value]="i.id">{{i.orderTypeName}}</option>
+                </ng-container>
                   </select>   
                   <label class="p-2">Reason</label>
                   <select  name="reason" id="reason" formControlName="reason" >
-                      <option value="Task Finished">Task Finished</option>
-                      <option value="Task Moving">Task Moving</option>
+                      <option value="order Finished">order Finished</option>
+                    </select>         
+                
+              </div>
+              <div  *ngIf="taskPermissionStart" class="taskPermissionDiv">
+                <label class="p-2">Task Name</label>
+                <select  name="reason" id="reason" formControlName="permissionItemId" >
+                    <ng-container *ngFor="let i of tasksRight" >
+                        <option *ngIf="i.status=='false'" [value]="i.id">{{i.orderTypeName}}</option>
+                    </ng-container>
+                 </select>   
+                  <label class="p-2">Reason</label>
+                  <select  name="reason" id="reason" formControlName="reason" >
+                      <option value="starting new order">starting new order</option>
                     </select>         
                 
               </div>
@@ -48,7 +84,7 @@
         </div>
          <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
         </div>
 
      </form>
@@ -58,18 +94,274 @@
 
 <!------------------------------------->
 
+ <!-- Order Modal -->
+<div class="modal fade" id="editOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form  [formGroup]="orderForm" (ngSubmit)="editOrder()">
+        <div class="modal-body text-center">
+
+            <div class="row ">
+                <div class="col-md-5 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Customer Name
+                            :</label>
+                        <select (change)="OnKey($event)" [(ngModel)]="customerName" formControlName="CustomerName" id="floatingCustomerName" class="form-control text-center me-5  ">
+                            <option class="" value="{{i.customerName}}" *ngFor="let i of customers">{{i.customerName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5  ">
+                    <div class="form-floating mb-2 form-group ">
+                        <label for="floatingCustomerCode" class="w-25 btn-dark text-center py-2 ">Customer Code
+                            :</label>
+                        <select formControlName="CustomerCode" id="floatingCustomerCode"
+                            class="form-control text-center me-5"  >
+                            <ng-container *ngFor="let i of customers | filter:customerName" >
+                            <option class="" [value]="i.customerCode" >{{i.customerCode}}</option>
+                        </ng-container>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="text" class="form-control" id="floatingOrderReference"
+                            placeholder="Order Reference" formControlName="OrderReference">
+                        <label for="floatingOrderReference">Order Reference</label>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="text" class="form-control" id="floatingOrderStatus"
+                            placeholder="Order Status" formControlName="OrderStatus">
+                        <label for="floatingOrderStatus">Order Status</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="text" class="form-control" id="floatingOrderNumber"
+                            placeholder="Order Number" formControlName="OrderNumber">
+                        <label for="floatingOrderNumber">Order Number</label>
+                    </div>
+                </div>
+                <div class="col-md-3  ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="text" class="form-control" id="floatingOrderTypeCode"
+                            placeholder="Order Type Code" formControlName="OrderTypeCode">
+                        <label for="floatingOrderTypeCode">Order Type Code</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row ">
+
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="text" class="form-control" id="floatingOrderTypeName"
+                            placeholder="Order Type Name" formControlName="OrderTypeName">
+                        <label for="floatingOrderTypeName">Order Type Name</label>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-floating mb-2 form-group ">
+                        <label for="floatingPriorty" class="w-25 btn-dark text-center py-2 px-3"> Order priority
+                            :</label>
+                        <select formControlName="OrderPriority" id="floatingPriorty"
+                            class="form-control text-center me-5  ">
+                            <option class=" btn-success " value="High">High</option>
+                            <option class="btn-dark " value="Low">Low</option>
+                            <option class=" btn-primary " value="Medium">Medium</option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-4 ">
+                    <div class="form-floating mb-4 form-group ">
+                        <input type="text" class="form-control" id="floatingOrderTotalAmount"
+                            placeholder="Paper Type" formControlName="PaperType">
+                        <label for="floatingOrderTotalAmount">Paper Type</label>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-floating mb-4 form-group ">
+                        <input type="text" class="form-control" id="floatingOrderTotalAmount"
+                            placeholder="Leather Type" formControlName="LeatherType">
+                        <label for="floatingOrderTotalAmount">Leather Type</label>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-floating mb-4 form-group ">
+                        <input type="file" class="form-control" id="floatingOrderTotalAmount"
+                            placeholder="Photo" formControlName="imgSrc">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="number" class="form-control" id="floatingOrderSheets"
+                            placeholder="Order Sheets" [attr.disabled]='true' (ngModelChange)="orderTotalAmountCalculator()" [(ngModel)]="orderSheets" formControlName="OrderSheets">
+                        <label for="floatingOrderSheets">Order Sheets</label>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="number" class="form-control" id="floatingPiecesPreSheets"
+                            placeholder="Pieces Pre Sheets" (ngModelChange)="sheetsOrderCounter();sheetsPriceCalculator()" formControlName="PiecesPreSheets">
+                        <label for="floatingPiecesPreSheets">Pieces Pre Sheets</label>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="number" class="form-control" (ngModelChange)="sheetsOrderCounter()" id="floatingTotalPrice"
+                            placeholder="Total Price" formControlName="TotalPieces">
+                        <label for="floatingTotalPrice">Total Pieces</label>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="number" class="form-control" id="floatingPiecePrice"
+                            placeholder="Piece Price" (ngModelChange)="sheetsPriceCalculator()" formControlName="PiecePrice">
+                        <label for="floatingPiecePrice">Piece Price</label>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="number" class="form-control" id="floatingSheetPrice"
+                            placeholder="Sheet Price" [(ngModel)]="sheetsPrice" [attr.disabled]='true' (ngModelChange)="orderTotalAmountCalculator()" formControlName="SheetPrice">
+                        <label for="floatingSheetPrice">Sheet Price</label>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="number" class="form-control" id="floatingOrderTotalAmount"
+                            placeholder="Order Total Amount" [(ngModel)]="orderTotalAmount" formControlName="OrderTotalAmount" [attr.disabled]='true'>
+                        <label for="floatingOrderTotalAmount">Order Total Amount</label>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center bg-dark text-white">Side Steps Availability</p>
+            <div class="row ">
+                <div class="col-md-4 ">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                            id="flexCheckChecked1" name="CNC"
+                            formControlName="CNC" [checked]="cncboolen"
+                            />
+                        <label class="form-check-label" for="flexCheckChecked">CNC
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                            id="flexCheckChecked2" name="CTB"
+                            formControlName="CTB" [checked]="ctpboolen"/>
+                        <label class="form-check-label" for="flexCheckChecked">CTB
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                            id="flexCheckChecked3" name="Stamp"
+                            formControlName="Stamp" [checked]="stampboolen"/>
+                        <label class="form-check-label" for="flexCheckChecked">Stamp
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center bg-dark text-white">Default Steps</p>
+            <div class="row ">
+                <div class="col-md-4 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="text" class="form-control" id="floatingStepCode" placeholder="Step Code"
+                            formControlName="StepCode">
+                        <label for="floatingStepCode">Step Code</label>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="text" class="form-control" id="floatingStepName" placeholder="Step Name"
+                            formControlName="StepName">
+                        <label for="floatingStepName">Step Name</label>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="text" class="form-control" id="floatingStepFactor"
+                            placeholder="Step Factor" formControlName="StepFactor">
+                        <label for="floatingStepFactor">Step Factor</label>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center bg-dark text-white">Default Steps</p>
+            <div class="row">
+                <div class="col-md-4 ">
+                    <div class="form-floating mb-2 form-group ">
+                        <input type="number" class="form-control"  id="numberOfMachines"
+                            placeholder="Number of machines" [(ngModel)]="input" (ngModelChange)="machinePath($event)" [ngModelOptions]="{standalone: true} ">
+                        <label for="floatingStepFactor">Number of machines</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 " *ngFor="let i of selectedMachines;index as s">
+                    <div class="form-floating mb-2 form-group ">
+                        <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Machine {{s+1}}</label>
+                        <select (change)="test(s,$event)" [(value)]="selectedMachines2[s]" id="floatingCustomerName" class="form-control text-center me-5  ">
+                            <option class="" [value]="i.id" *ngFor="let i of machines">{{i.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!------------------------------------->
+
 
 <section>
     <div class="row">
       <div class="col-md-2 left-side-bar">
           <div>
-              <h4> Title : {{taskDetails.name}}</h4>
-              <p>Description : {{taskDetails.description}}</p>
-              <p>Duration : {{taskDetails.duration}}</p>
+              <h4> Title : {{taskDetails?.id}}</h4>
+              <p>Duration : {{taskDetails?.duration}}</p>
+              <button class="btn btn-warning"  data-bs-toggle="modal" data-bs-target="#editOrder" (click)="viewTask(taskDetails.id)"> Edit Order</button>
           </div>
       </div>
       <div class="col-md-8">
       <div class="mt-5">
+        <div class="text-center">
+          <ng-container  *ngFor="let i of permissionResponse">
+            <ng-container  *ngIf="i?.responseStatues=='true'">
+
+            <p class="text-danger" *ngIf="i?.responseType=='Decline'">{{i?.responseMessage}} at {{i?.responseTime}}</p>
+            <p class="text-success" *ngIf="i?.responseType=='Aceepted'">{{i?.responseMessage}} at {{i?.responseTime}}</p>
+            </ng-container>
+          </ng-container>
+      </div>
           <div class=" col-md-12 d-flex justify-content-center mb-3"><button class="btn btn-primary "  data-bs-toggle="modal" data-bs-target="#Permission" > Request Permission <i class="fa-solid fa-right-left"></i></button></div>
                   <div class="row justify-content-center">
                       <div class="col-md-4 px-21 mt-2" *ngFor="let i of machines">
@@ -80,7 +372,7 @@
                                       <div class=" col-md-6 d-flex justify-content-end">
                                           <div class="form-check form-switch mx-auto" *ngIf="userPrivlage[0].machineCheckBox=='true'">
                                               <input class="form-check-input" type="checkbox"
-                                                  (change)="startStop($event,tasks[i.id][0].id)" role="switch"
+                                                  (change)="startStop($event,i.id)" role="switch"
                                                   id="flexSwitchCheckChecked" [checked]="i.status=='true'" />
                                           </div>
                                           <button type="button" class="btn btn-danger deltBtn mx-1" (click)="deleteMachine(i.id)" *ngIf="userPrivlage[0].machineCheckBox=='true'">Delete</button>
@@ -88,10 +380,15 @@
                                   </div>
                               </div>
                               <ul style="height: 250px;border:solid 1px #000;overflow-y: scroll;" class="list-group list-group-flush scrollbar" id="{{i.id}}" cdkDropList [cdkDropListConnectedTo]="machineIds" (cdkDropListDropped)="onDrop($event,i.status)" [cdkDropListData]="tasks[i.id]" >
-                                  <li class="list-group-item" cdkDrag class="drag-item" [cdkDragDisabled]="i.status=='false'||userPrivlage[0].taskCheckBox=='false'" *ngFor="let j of tasks[i.id]" (click)="viewTask(j.id)">
+                                  <li class="list-group-item" cdkDrag class="drag-item" [cdkDragDisabled]="i.status=='false'||userPrivlage[0].taskCheckBox=='false'" *ngFor="let j of tasks[i.id];index as s" (click)="viewTask(j.id)">
                                       <div class="row">
-                                      <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
-                                      <p *ngIf="i.status=='true'">{{counters[j.id]}}</p>
+                                        <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
+                                        <div class="form-check form-switch mx-auto" *ngIf="userPrivlage[0].machineCheckBox=='true'">
+                                            <input *ngIf="i.id!=1" class="form-check-input" type="checkbox"
+                                                (change)="startStopTask($event,tasks[i.id][s].id)" role="switch"
+                                                id="flexSwitchCheckChecked" [checked]="j.status=='true'" />
+                                        </div>
+                                        <p *ngIf="j.status=='true'">{{counters[j.id]}}</p>
                                       </div>
                                   </li>
                               </ul>
