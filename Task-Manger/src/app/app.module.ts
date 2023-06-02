@@ -12,6 +12,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LogInComponent } from './log-in/log-in.component';
 import { PermissionComponent } from './permission/permission.component';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PermissionComponent } from './permission/permission.component';
     NavbarComponent,
     AdminDashboardComponent,
     LogInComponent,
-    PermissionComponent
+    PermissionComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,
