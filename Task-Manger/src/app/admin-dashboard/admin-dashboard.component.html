@@ -116,6 +116,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            <div class="form-floating mb-3 form-group w-50">
+                                <input type="number" class="form-control" id="floatingInput" placeholder="productivity"
+                                    formControlName="productivity">
+                                <label for="floatingInput">Productivity</label>
+                                <div
+                                    *ngIf="machineForm.get('productivity')?.invalid && machineForm.get('productivity')?.touched">
+                                    <small class="btn btn-danger px-5 form-control"
+                                        *ngIf="machineForm.get('productivity')?.errors?.['required']">Productivity is
+                                        required</small>
+    
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class=" mb-3 col-md-6 form-group d-flex justify-content-center w-100">
                         <button type="submit" class="btn btn-success btn-lg btn-block"
@@ -545,7 +559,9 @@
                                 <label for="floatingCustomerName" class="w-25 btn-dark text-center py-2">Machine {{s+1}}</label>
                                 <select (change)="test(s,$event)" id="floatingCustomerName" class="form-control text-center me-5  ">
                                     <option disabled selected value></option>
-                                    <option class="" [value]="i.id" *ngFor="let i of machines">{{i.name}}</option>
+                                    <ng-container  *ngFor="let i of machines">
+                                        <option class="" [value]="i.id" [disabled]="selectedMachines2.includes(i.id.toString())">{{i.name}}</option>
+                                    </ng-container>
                                 </select>
                             </div>
                         </div>

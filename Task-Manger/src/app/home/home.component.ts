@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit {
       for (let i = 0; i < Object.keys(this.tasks).length; i++) {
           for (let j = 0; j < this.tasks[Object.keys(this.tasks)[i]].length; j++) {
             if(this.tasks[Object.keys(this.tasks)[i]][j]!=undefined)
-              this.counters[this.tasks[Object.keys(this.tasks)[i]][j].id]=this.timeCounter(this.tasks[Object.keys(this.tasks)[i]][j].endDate)
+              this.counters[this.tasks[Object.keys(this.tasks)[i]][j].id]=this.timeCounter(this.tasks[Object.keys(this.tasks)[i]][j].startDate)
           }
       }
     }) 
@@ -113,8 +113,8 @@ export class HomeComponent implements OnInit {
   }
   ngOnInit(): void {
   }
-  timeCounter(endDate:any){
-    var seconds = Math.floor(((new Date().getTime())-(new Date(endDate).getTime()))/1000);
+  timeCounter(startDate:any){
+    var seconds = Math.floor(((new Date().getTime())-(new Date(startDate).getTime()))/1000);
     var minutes = Math.floor(seconds/60);
     var hours = Math.floor(minutes/60);
     var days = Math.floor(hours/24);
@@ -162,6 +162,12 @@ export class HomeComponent implements OnInit {
   }
   deleteTask(element:any){
     this.Service.postFun('deleteTask',{id:element}).subscribe(data => {
+      this.getTasks()
+    })
+  }
+  finishTask(element:any){
+    console.log("🚀 ~ file: home.component.ts:167 ~ HomeComponent ~ this.Service.postFun ~ element:", element)
+    this.Service.postFun('finishTask',{id:element}).subscribe(data => {
       this.getTasks()
     })
   }
@@ -358,8 +364,8 @@ export class HomeComponent implements OnInit {
     return index;
   }
 
-  onDrop(event:CdkDragDrop<string []>,status:any){
-    if (status=='true') {
+  onDrop(event:CdkDragDrop<string []>,status:any,index:any){
+    if (status=='true'&&index!=0) {
       if (event.previousContainer === event.container) {
           moveItemInArray(
           event.container.data,
@@ -390,7 +396,7 @@ export class HomeComponent implements OnInit {
       //   event.previousIndex,
       //   event.currentIndex)
       this.updateTask(event.container.id,taskIDs,event.previousContainer.id,taskIDsBefore) 
-      console.log(this.tasks);
+      console.log("machineIds ",this.machineIds);
     }
   }
 }

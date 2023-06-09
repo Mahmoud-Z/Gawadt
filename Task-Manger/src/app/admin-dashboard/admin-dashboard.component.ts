@@ -26,6 +26,7 @@ export class AdminDashboardComponent implements OnInit {
   })
   machineForm = new FormGroup({
     machineName: new FormControl('',Validators.compose([Validators.required])),
+    productivity: new FormControl('',Validators.compose([Validators.required]))
   })
   taskForm = new FormGroup({
     CustomerName: new FormControl('',Validators.compose([Validators.required])),
@@ -203,7 +204,7 @@ export class AdminDashboardComponent implements OnInit {
     console.log(this.customerName);
 
     //this.taskForm.controls['CustomerCode'].setValue(this.taskDetails.stepCode);
-    console.log(this.taskForm.value);
+    console.log("this.taskForm.value : "+this.taskForm.value);
     this.Service.postFun('importTasks',this.taskForm.value).subscribe(data => {
       this.ItemSuccessMsg=true;
     })
@@ -224,6 +225,7 @@ export class AdminDashboardComponent implements OnInit {
     })
   }
   getMachines(){
+    this.selectedMachines2 =[];
     this.Service.getFun('getMachine').subscribe(data => {
       this.machines=data;
     })
@@ -236,6 +238,7 @@ export class AdminDashboardComponent implements OnInit {
   test(id:any,event:any){
     this.selectedMachines2[id]=(<HTMLInputElement>event.target).value;
     this.taskForm.value['MachinePath']=this.selectedMachines2;
-    console.log(this.selectedMachines2);
+    console.log("this.selectedMachines2" ,this.selectedMachines2);
+    
   }
 }

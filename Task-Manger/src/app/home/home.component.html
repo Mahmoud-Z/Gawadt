@@ -364,7 +364,7 @@
       </div>
           <div class=" col-md-12 d-flex justify-content-center mb-3"><button class="btn btn-primary "  data-bs-toggle="modal" data-bs-target="#Permission" > Request Permission <i class="fa-solid fa-right-left"></i></button></div>
                   <div class="row justify-content-center">
-                      <div class="col-md-4 px-21 mt-2" *ngFor="let i of machines">
+                      <div class="col-md-4 px-21 mt-2" *ngFor="let i of machines;index as x">
                           <div class="card " style="width: 100%;">
                               <div class="card-header justify-content-center">
                                   <div class="row ">
@@ -373,16 +373,19 @@
                                           <div class="form-check form-switch mx-auto" *ngIf="userPrivlage[0].machineCheckBox=='true'">
                                               <input class="form-check-input" type="checkbox"
                                                   (change)="startStop($event,i.id)" role="switch"
-                                                  id="flexSwitchCheckChecked" [checked]="i.status=='true'" />
+                                                  id="flexSwitchCheckChecked" [checked]="i.status=='true'&&x!=0" />
                                           </div>
                                           <button type="button" class="btn btn-danger deltBtn mx-1" (click)="deleteMachine(i.id)" *ngIf="userPrivlage[0].machineCheckBox=='true'">Delete</button>
                                       </div>
                                   </div>
                               </div>
-                              <ul style="height: 250px;border:solid 1px #000;overflow-y: scroll;" class="list-group list-group-flush scrollbar" id="{{i.id}}" cdkDropList [cdkDropListConnectedTo]="machineIds" (cdkDropListDropped)="onDrop($event,i.status)" [cdkDropListData]="tasks[i.id]" >
+                              <ul style="height: 250px;border:solid 1px #000;overflow-y: scroll;" class="list-group list-group-flush scrollbar" id="{{i.id}}" cdkDropList [cdkDropListConnectedTo]="machineIds" (cdkDropListDropped)="onDrop($event,i.status,x)" [cdkDropListData]="tasks[i.id]" >
                                   <li class="list-group-item" cdkDrag class="drag-item" [cdkDragDisabled]="i.status=='false'||userPrivlage[0].taskCheckBox=='false'" *ngFor="let j of tasks[i.id];index as s" (click)="viewTask(j.id)">
                                       <div class="row">
-                                        <div class="col-md-6">Task {{j.id}}</div>  <div class="col-md-6 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
+                                        <div class="col-md-6">Task {{j.id}}</div>  
+                                        <div class="col-md-4 d-flex justify-content-end"><button type="button" class="btn btn-success deltBtn" (click)="finishTask(j.id)">Finish</button></div>
+                                        <div class="col-md-2 d-flex justify-content-end"><button type="button" class="btn btn-danger deltBtn" (click)="deleteTask(j.id)">Delete</button></div>
+                                         
                                         <div class="form-check form-switch mx-auto" *ngIf="userPrivlage[0].machineCheckBox=='true'">
                                             <input *ngIf="i.id!=1" class="form-check-input" type="checkbox"
                                                 (change)="startStopTask($event,tasks[i.id][s].id)" role="switch"
